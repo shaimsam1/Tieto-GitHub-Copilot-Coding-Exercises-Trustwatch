@@ -17,17 +17,17 @@
 
 | | Project 1 | Project 2 | Project 3 |
 |---|---|---|---|
-| **Name** | Transaction Risk Alert Dashboard | AML Pattern Detection Dashboard | AI-Powered Financial Intelligence Assistant |
+| **Name** | Transaction Risk Alert Dashboard | AML Pattern Detection Dashboard | Legacy Banking System Modernisation |
 | **Complexity** | Beginner–Intermediate | Intermediate–Advanced | Advanced |
-| **Data Source** | Mock REST API (Spring Boot) | Mock REST API (Spring Boot) | Mock REST API (two endpoints) |
-| **Data Focus** | Per-account transaction risk | Account network AML patterns | Portfolio risk + market intelligence |
-| **AI Integration** | Display only | Display + rule-based analysis | AI reasoning + decision support |
-| **Best For** | Learning the agentic workflow basics | Complex domain modelling and graph data | AI integration and multi-source reasoning |
+| **Data Source** | Mock REST API (Spring Boot) | Mock REST API (Spring Boot) | Provided legacy starter codebase |
+| **Data Focus** | Per-account transaction risk | Account network AML patterns | Account + transaction data migration |
+| **AI Integration** | Display only | Display + rule-based analysis | Migration planning + code generation |
+| **Best For** | Learning the agentic workflow basics | Complex domain modelling and graph data | Modernising legacy systems with AI |
 
 **Recommendation:**
 - New to agentic workflows? Start with **Project 1**
 - Comfortable with domain modelling? Try **Project 2** for graph data and compliance logic
-- Want to explore AI reasoning and multi-source data? Choose **Project 3**
+- Want to modernise a legacy system using AI assistance? Choose **Project 3**
 
 ---
 
@@ -176,119 +176,82 @@ Seed data: 50 accounts with relationship edges forming a directed transaction gr
 
 ---
 
-## Project 3 — AI-Powered Financial Intelligence Assistant (Advanced)
+## Project 3 — Legacy Banking System Modernisation (Migrate & Modernize Track)
 
 ### Objective
 
-Build an intelligent conversational assistant that combines a mock market intelligence endpoint with internal portfolio and transaction risk data — both served from a local Spring Boot backend — to provide comprehensive financial decision support through natural language interaction.
+Use GitHub Copilot as your migration co-pilot to modernise a provided legacy banking monolith — moving it from an older Java/Spring MVC stack to a production-ready Spring Boot 3.x application, complete with updated data access patterns, a clean REST API, and observability.
 
 ### Goal
 
-Practice the agentic workflow while integrating AI capabilities through tool-calling. Learn to combine multiple data sources — forward-looking market intelligence and backward-looking portfolio observations — and enable natural language interaction for complex financial reasoning scenarios.
+Practice the agentic workflow in a real-world migration context. Rather than building from scratch, you will analyse existing legacy code with Copilot's help, generate a migration plan, execute incremental refactoring steps, and validate the modernised application — all driven by isolated agent tasks.
 
 ### Scenario
 
-You are building an AI-powered assistant for relationship managers and risk analysts at a regional bank. The assistant must answer complex, multi-source questions such as:
+You have inherited a legacy account management system built on Spring Framework 4.x and JDBC templates. The system handles core banking operations but is difficult to maintain, lacks observability, and cannot be deployed to a container platform. Your task is to migrate it to Spring Boot 3.x, replace raw JDBC with Spring Data JPA, expose a modern REST API, and add structured logging and health endpoints.
 
-- *"Should we increase credit exposure to the Retail sector this quarter?"*
-- *"Which client portfolios are most exposed to current FX volatility?"*
-- *"Flag any accounts with overlapping AML signals and deteriorating sector fundamentals."*
+### What Makes This Track Different
 
-Answering these questions requires reasoning across **market intelligence** (external, predictive) and **internal portfolio and transaction data** (mock, observational). The assistant should explain its reasoning and cite its sources.
+- **Migration-first mindset**: You start from existing code, not a blank slate
+- **AI-assisted analysis**: Use Copilot to understand legacy patterns before changing them
+- **Incremental refactoring**: Each agent task moves one layer forward without breaking the others
+- **Validation at every step**: Copilot generates tests before and after each migration step
 
-### What Makes This Project Advanced
+### Required Deliverables
 
-- **Dual Mock API Integration**: Fetch data from two separate mock endpoints — a market intelligence feed and an internal portfolio/transaction API — both served from the local Spring Boot backend
-- **AI Tool-Calling**: Register both endpoints as tools so the AI model can invoke them during a conversation turn
-- **AI Reasoning Layer**: The AI actively reasons across both sources rather than simply displaying data
-- **Multi-Source Decision Making**: Correlate market signals with internal portfolio observations
+#### 1. Legacy Code Analysis
+- Use Copilot to audit the provided legacy codebase and produce a `migration-plan.md`
+- Identify deprecated APIs, JDBC template usages, XML bean definitions, and missing test coverage
+- Map existing endpoints and data models to their modern Spring Boot equivalents
+- Document breaking changes and migration risks
 
-Example reasoning chains:
-- *"Retail sector credit risk is elevated (market signal) + three clients show increasing transaction anomalies (internal data) = recommend tightening credit limits"*
-- *"FX volatility spike in EUR/USD (market) + portfolio has 40% EUR-denominated holdings (internal) = flag for hedging review"*
-- *"SAR filed on account network (internal) + sanctions screening list updated (external) = escalate to compliance immediately"*
+#### 2. Core Migration
+- Replace XML Spring configuration with `@SpringBootApplication` and Java config
+- Migrate JDBC templates to Spring Data JPA repositories with H2 for development
+- Introduce a layered architecture: Controller → Service → Repository
+- Expose the migrated functionality as a documented REST API (Spring Web)
+- Add Actuator health and info endpoints
 
-### Required Features
+#### 3. Modernisation & Observability
+- Add structured JSON logging with contextual MDC fields (account ID, request ID)
+- Add `@ControllerAdvice` global error handling with RFC 7807 problem details
+- Write JUnit 5 integration tests covering the migrated endpoints
+- Produce a `migration-report.md` summarising what changed, what was removed, and what was improved
 
-#### 1. Market Intelligence Integration (Mock Endpoint)
-- Fetch mock market signals from the local Spring Boot backend under `/market/signals`
-- Enable natural language queries routed to the AI model with the fetched market context injected as tool output
-- Support queries such as:
-  - *"What is the current credit risk outlook for the Financial Services sector?"*
-  - *"Summarise recent FX movements affecting EUR-denominated portfolios."*
-  - *"Are there any active sanctions or watchlist updates relevant to Eastern European entities?"*
-- Display the AI response in a readable format with the data source cited
-
-#### 2. Internal Portfolio Data Integration
-- Fetch mock portfolio and transaction risk data from the local Spring Boot API
-- Display alongside market intelligence in a unified view
-- Show correlations between external signals and internal observations:
-  - Sector risk elevated externally + client portfolio concentrated in that sector
-  - FX movement + currency exposure breakdown of holdings
-  - AML flag raised internally + relevant external sanctions or typology intelligence
-- Use colour-coding to highlight critical combinations
-
-#### 3. Conversational Decision Support
-- Build a chat-style UI for natural language interaction
-- Enable complex multi-source questions to be answered in a single conversation turn
-- Display the AI's reasoning process:
-  - Which data sources were accessed
-  - What inferences were drawn
-  - What the confidence level is
-  - What action is recommended and why
-- Include source citations distinguishing market intelligence (external) from portfolio data (internal mock API)
-
-### Mock Data Schema
+### Legacy Codebase Schema (provided as starting point)
 
 ```
-Portfolio
-  portfolioId      : UUID
-  clientName       : String
-  relationshipManager : String
-  totalValueEur    : BigDecimal
-  riskProfile      : Enum (CONSERVATIVE, BALANCED, AGGRESSIVE)
-  holdings         : List<Holding>
+LegacyAccount (JDBC-mapped)
+  account_id      : VARCHAR (primary key)
+  customer_name   : VARCHAR
+  iban            : VARCHAR
+  account_type    : VARCHAR ('PERSONAL', 'BUSINESS')
+  balance         : DECIMAL
+  opened_date     : DATE
+  status          : VARCHAR ('ACTIVE', 'FROZEN', 'CLOSED')
 
-Holding
-  holdingId        : UUID
-  assetClass       : Enum (EQUITY, FIXED_INCOME, FX, COMMODITY, ALTERNATIVE)
-  sector           : String (e.g., RETAIL, ENERGY, FINANCIAL_SERVICES)
-  currency         : String (ISO 4217)
-  valueEur         : BigDecimal
-  exposurePct      : Double
-  riskScore        : Integer (0–100)
-
-MarketSignal (served from mock market endpoint `/market/signals`)
-  signalId         : UUID
-  category         : Enum (SECTOR_RISK, FX_VOLATILITY, SANCTIONS_UPDATE, CREDIT_RATING_CHANGE)
-  description      : String
-  severity         : Enum (INFO, WATCH, WARNING, CRITICAL)
-  affectedSectors  : List<String>
-  affectedCurrencies : List<String>
-  publishedAt      : Instant
-  source           : String
+LegacyTransaction (JDBC-mapped)
+  transaction_id  : VARCHAR (primary key)
+  account_id      : VARCHAR (foreign key)
+  amount          : DECIMAL
+  currency        : VARCHAR
+  description     : VARCHAR
+  transaction_date : TIMESTAMP
+  status          : VARCHAR ('COMPLETED', 'PENDING', 'FAILED')
 ```
 
-Seed data: 20 portfolios with varied holdings, 10 market signal events (3 critical, 4 warning, 3 info) designed to create interesting cross-source correlations with the portfolio data.
+A skeleton legacy project (Spring 4.x, XML config, raw JDBC) is provided in the `legacy-starter/` folder as your migration baseline.
 
-### Technical Architecture
+### Technical Migration Path
 
-1. **Market Intelligence Mock API** (Spring Boot)
-   - Mock REST endpoint under `/market/signals` serving `MarketSignal` records
-   - Additional endpoints: `/market/sector-outlook`, `/market/fx-summary`
-   - Registered as an AI tool so the model can call it during a conversation turn
-
-2. **Internal Portfolio Mock API** (Spring Boot)
-   - `/portfolios` — list all portfolios
-   - `/portfolios/{id}` — portfolio detail with holdings
-   - `/portfolios/{id}/risk` — current risk assessment
-   - `/transactions/{accountId}` — transaction history for a client
-
-3. **AI Orchestration**
-   - Spring AI or LangChain4j for tool-calling and prompt orchestration
-   - System prompt defines the assistant's role and reasoning protocol
-   - Tool definitions expose both the market intelligence endpoint and the portfolio API to the model
-   - No external API keys or additional servers required — all data served locally from Spring Boot
+| Phase | From (Legacy) | To (Modern) |
+|---|---|---|
+| Configuration | XML beans (`applicationContext.xml`) | `@SpringBootApplication` + Java config |
+| Data access | `JdbcTemplate` row mappers | Spring Data JPA + `@Entity` + `@Repository` |
+| REST layer | Spring MVC `@Controller` + JSP | Spring Boot `@RestController` + JSON |
+| Error handling | Manual try/catch in controllers | `@ControllerAdvice` + problem details |
+| Testing | JUnit 4 + manual wiring | JUnit 5 + `@SpringBootTest` |
+| Observability | None | Spring Actuator + structured logging |
 
 ---
 
@@ -314,7 +277,6 @@ All projects use the same approach to avoid requiring real external APIs:
 | Data | Spring Data JPA + H2 |
 | REST | Spring Web (mock API endpoints) |
 | Mock generation | java-faker |
-| AI integration (Project 3) | Spring AI or LangChain4j |
 | Testing | JUnit 5 + Mockito |
 | Build | Maven (multi-module structure recommended) |
 
