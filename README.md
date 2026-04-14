@@ -11,7 +11,7 @@ A hands-on workshop where participants build a project prototype entirely throug
 - [Getting Started](#getting-started)
 - [Project 1 — Transaction Risk Alert Dashboard](#project-1--transaction-risk-alert-dashboard)
 - [Project 2 — AML Pattern Detection Dashboard](#project-2--aml-pattern-detection-dashboard)
-- [Project 3 — Legacy Banking System Modernisation](#project-3--legacy-banking-system-modernisation-migrate--modernize-track)
+- [Project 3 — Legacy System Modernisation](#project-3--legacy-system-modernisation-migrate--modernize-track)
 - [Mock Data Strategy](#mock-data-strategy)
 - [Recommended Stack](#recommended-stack)
 - [Workshop Flow](#workshop-flow)
