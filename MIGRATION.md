@@ -1,43 +1,27 @@
-# Track 4: AI-Assisted Language/Framework Migration
+# AI-Assisted Language/Framework Migration
 
 Migrate code between languages, frameworks, or architectures using AI to accelerate transformation.
 
 ---
 
-## Cross-Track Enhancements
-
-💡 **Enhanced with Track 1:** Establish domain standards in the target stack before migration  
-🔗 **Follows Track 3:** Refactor before migrating for cleaner results
-
----
-
-## Prerequisites
-
-**Required:**
-- VS Code or JetBrains IDE installed
-- GitHub Copilot and Copilot Chat extensions
-- Code to migrate (source)
-- Target language/framework knowledge
-
----
-
 ## Workshop Flow
 
-| Step | Section | Description |
-|------|---------|-------------|
-| 📋 | **Core Exercise** | |
-| | → [Part A: Plan Migration](#part-a-plan-migration-strategy-with-ai) | Analyze codebase and create phased plan |
-| | → [Part B: Understand Source](#part-b-understand-source-code) | Explain code and chart data flows |
-| | → [Part C: Setup & Test Plan](#part-c-setup-target-environment--test-plan) | Configure target and document expected behavior |
-| | → [Part D: Migrate Code](#part-d-migrate-code-with-ai) | Transform code layer by layer |
-| | → [Part E: Validate & Iterate](#part-e-validate--iterate) | Test, debug, and refine until passing |
-| 🤖 | [Automating Migrations](#-automating-migrations-with-custom-agents--prompt-files) | **Advanced: Automation** |
-| | → [Part A: Create Migration Agent](#part-a-create-a-migration-custom-agent) | Build specialized migration agent |
-| | → [Part B: Create Prompt Files](#part-b-create-reusable-prompt-files) | Reusable migration prompts with workflow table |
-| | → [Part C: Automate with Agents + Prompts](#part-c-automate-with-agents--prompts) | Combine agents and prompts for automation |
-| 📚 | [Example Session](#example-migration-session) | Flask → Express walkthrough |
-| 🔄 | [Common Scenarios](#common-migration-scenarios) | Python, Ruby, JS → TS patterns |
-| 🎯 | [Hands-On Practice](#hands-on-practice) | GitHub Skills exercise |
+> 🕐 **Total workshop time: 4 hours**
+
+| Step | Section | Description | Time |
+|------|---------|-------------|------|
+| 📋 | **Core Exercise** | | **~3 h 30 min** |
+| | → [Part A: Plan Migration](#part-a-plan-migration-strategy-with-ai) | Analyze codebase and create phased plan | 25 min |
+| | → [Part B: Understand Source](#part-b-understand-source-code) | Explain code and chart data flows | 20 min |
+| | → [Part C: Setup & Test Plan](#part-c-setup-target-environment--test-plan) | Configure target and document expected behavior | 40 min |
+| | → [Part D: Migrate Code](#part-d-migrate-code-with-ai) | Transform code layer by layer | 75 min |
+| | → [Part E: Validate & Iterate](#part-e-validate--iterate) | Test, debug, and refine until passing | 50 min |
+| 🤖 | [Automating Migrations](#-automating-migrations-with-custom-agents--prompt-files) | **Advanced: Automation** *(if time permits)* | **~30 min** |
+| | → [Part A: Create Migration Agent](#part-a-create-a-migration-custom-agent) | Build specialized migration agent | 10 min |
+| | → [Part B: Create Prompt Files](#part-b-create-reusable-prompt-files) | Reusable migration prompts with workflow table | 10 min |
+| | → [Part C: Automate with Agents + Prompts](#part-c-automate-with-agents--prompts) | Combine agents and prompts for automation | 10 min |
+| 📚 | [Example Session](#example-migration-session) | Step-by-step migration walkthrough | reference |
+| 🎯 | [Hands-On Practice](#hands-on-practice) | GitHub Skills exercise | take-home |
 
 ---
 
@@ -54,6 +38,8 @@ Migrate code between languages, frameworks, or architectures using AI to acceler
 ---
 
 ## Part A: Plan Migration Strategy with AI
+
+> 🕐 **Suggested time: 25 minutes**
 
 **Purpose:** Develop comprehensive migration plan using AI analysis.
 
@@ -84,8 +70,8 @@ Provide:
 ```
 
 **Adapt this prompt by:**
-- Replacing `[SOURCE_LANGUAGE/FRAMEWORK]` with your actual stack (e.g., "Python Flask")
-- Replacing `[TARGET]` with your target (e.g., "Node.js Express + TypeScript")
+- Replacing `[SOURCE_LANGUAGE/FRAMEWORK]` with your actual stack (e.g., "Spring Boot 2.x", ".NET 6 Razor Pages")
+- Replacing `[TARGET]` with your target (e.g., "Spring Boot 3.x", ".NET 8 Minimal API")
 - Adding specific files using `#file:` references
 - Including any known constraints or requirements
 
@@ -104,8 +90,8 @@ Provide:
 Create a phased migration plan from [SOURCE] to [TARGET]:
 
 Context:
-- Source stack: [e.g., Python Flask + SQLAlchemy + Jinja2]
-- Target stack: [e.g., Node.js Express + Prisma + React]
+- Source stack: [e.g., Spring Boot 2.x + JPA + JUnit 4]
+- Target stack: [e.g., Spring Boot 3.x + Spring Data JPA + JUnit 5]
 - Constraints: [e.g., must maintain API compatibility, zero downtime]
 
 Provide:
@@ -125,32 +111,32 @@ Provide:
 
 **Example Output:**
 ```
-Phase 1: Setup Target Environment (1 week)
-- Initialize Node.js project
-- Setup Prisma + PostgreSQL
-- Configure build pipeline
-- Setup integration tests
+Phase 1: Setup Target Environment
+- Initialise target project with recommended structure
+- Configure build tool and dependency manager
+- Set up testing framework
+- Configure CI pipeline
 
-Phase 2: Migrate Data Layer (2 weeks)
-- Translate SQLAlchemy models to Prisma schema
-- Migrate database migrations
+Phase 2: Migrate Data Layer
+- Translate source data models/schemas to target equivalents
+- Migrate or recreate database access patterns
 - Test CRUD operations
-- Parallel run with source DB
+- Validate data integrity
 
-Phase 3: Migrate Business Logic (3 weeks)
-- Port Flask routes to Express
-- Translate Python business logic to TypeScript
-- Migrate validation logic
+Phase 3: Migrate Business Logic
+- Port service/domain layer files to target stack
+- Translate framework-specific patterns to target idioms
+- Migrate validation and error handling logic
 - Unit test each module
 
-Phase 4: Migrate Frontend (2 weeks)
-- Convert Jinja2 templates to React components
-- Implement client-side routing
-- Migrate frontend logic
+Phase 4: Migrate API / Presentation Layer
+- Convert source controllers/handlers to target equivalents
+- Align request/response contracts with target framework
+- Migrate middleware and filter chains
 
-Phase 5: Integration & Optimization (1 week)
-- End-to-end testing
-- Performance optimization
+Phase 5: Integration & Validation
+- End-to-end testing against test plan
+- Performance comparison
 - Security audit
 - Go-live
 ```
@@ -160,6 +146,8 @@ Phase 5: Integration & Optimization (1 week)
 ---
 
 ## Part B: Understand Source Code
+
+> 🕐 **Suggested time: 20 minutes**
 
 **Purpose:** Deeply understand how source code works before transforming it.
 
@@ -216,6 +204,8 @@ Based on our analysis of this codebase, create a MIGRATION_NOTES.md file that do
 
 ## Part C: Setup Target Environment & Test Plan
 
+> 🕐 **Suggested time: 40 minutes**
+
 **Purpose:** Configure target stack and establish test plan before writing migrated code.
 
 > 💡 **Note:** The prompts in this section are examples. Adapt them to your specific target framework, testing preferences, and team conventions.
@@ -267,7 +257,7 @@ Format this in a way that works for our team (markdown table, bullet list, or st
 ```
 Setup a new [TARGET_FRAMEWORK] project:
 1. Initialize project with recommended structure
-2. Configure build tools (webpack/vite/etc)
+2. Configure build tools and dependency manager
 3. Setup linting and formatting
 4. Configure testing framework
 5. Create initial folder structure matching our architecture
@@ -276,7 +266,7 @@ Reference modern best practices for [TARGET_FRAMEWORK].
 ```
 
 **Adapt this prompt by:**
-- Replacing `[TARGET_FRAMEWORK]` with your actual target (e.g., "Express + TypeScript")
+- Replacing `[TARGET_FRAMEWORK]` with your actual target (e.g., "Spring Boot 3.x", ".NET 8 Minimal API")
 - Specifying your preferred build tools and package manager
 - Adding your team's folder structure conventions
 - Including CI/CD configuration if needed
@@ -294,14 +284,14 @@ Reference modern best practices for [TARGET_FRAMEWORK].
 **Example Prompt (Agent mode):**
 ```
 For this [SOURCE_FRAMEWORK] project:
-#file:package.json (or requirements.txt, Gemfile, etc.)
+#file:[dependency file — e.g., pom.xml, build.gradle, package.json, *.csproj]
 
 Suggest equivalent dependencies in [TARGET_FRAMEWORK]:
 - Map each dependency to target equivalent
 - Recommend alternatives where no direct equivalent exists
 - Note any migration challenges
 
-Generate target dependency file (package.json, requirements.txt, etc.).
+Generate target dependency file (pom.xml, build.gradle, package.json, *.csproj, etc.).
 ```
 
 **Adapt this prompt by:**
@@ -310,51 +300,49 @@ Generate target dependency file (package.json, requirements.txt, etc.).
 - Noting any dependencies that must be kept (e.g., shared with other systems)
 - Including security or licensing requirements
 
-### Step 4: Configure Development Environment (With Track 1)
+### Step 4: Configure Copilot Instructions for the Target Stack
 
-**What you're achieving:** If you completed Track 1, you're extending your domain instruction system to cover the target stack. This ensures migrated code follows the same standards and patterns as your existing codebase.
+**What you're achieving:** Setting up `.github/instructions/` files that give Copilot context about your target stack's conventions. This ensures AI-generated code follows consistent patterns throughout the migration rather than varying with each prompt.
 
 **Why this matters:**
-- Maintains consistency between source and target codebases
-- Provides AI with context for idiomatic target code
+- Provides Copilot with context for idiomatic target code
 - Documents migration-specific patterns for the team
-- Enables domain-aware code reviews of migrated code
-
-**If Track 1 completed:** Setup domain instructions for target stack
+- Ensures consistent style across all migrated files
+- Reduces the need to repeat conventions in every prompt
 
 **Example Prompt (Agent mode):**
 ```
-Create domain instructions for our new [TARGET_STACK]:
+Create a Copilot instructions file for our target stack:
 
-Based on:
-- Source domain structure: #file:.github/instructions/
-- Target stack: [TARGET_FRAMEWORK, LANGUAGE]
+Target stack: [TARGET_FRAMEWORK, LANGUAGE]
 
-Generate:
-- .github/instructions/[target]-common.instructions.md
-- Domain-specific instructions for target
-- Migration-specific guidelines
-
-Ensure consistency with source domain patterns.
+Generate .github/instructions/[target]-common.instructions.md covering:
+- Preferred project structure and naming conventions
+- Framework-specific patterns to follow (e.g., annotation style, error handling)
+- Testing conventions for [TARGET_TEST_FRAMEWORK]
+- Migration-specific rules (e.g., "all migrated files must have a comment noting the source file")
 ```
 
 **Adapt this prompt by:**
 - Specifying your actual target stack
-- Referencing your existing instruction files
-- Adding migration-specific rules (e.g., "all migrated files must have comments explaining translations")
+- Adding migration-specific rules relevant to your chosen starter repo
 - Including patterns specific to your target framework
 
 ---
 
 ## Part D: Migrate Code with AI
 
+> 🕐 **Suggested time: 75 minutes** — this is the largest block; focus on 2–3 layers that matter most for your chosen starter repo.
+
 **Purpose:** Transform code from source to target using AI.
+
+> ⚠️ **Scope tip:** Don't aim to migrate the entire codebase in the workshop. Pick 1–2 representative modules (e.g., one data model + one service class) and migrate those end-to-end. A complete, working slice is more valuable than a half-finished full migration.
 
 > 💡 **Scale with Automation:** For large migrations, create a custom agent or prompt files to ensure consistent translation patterns across all files. See [Automating with Custom Agents & Prompt Files](#automating-with-custom-agents--prompt-files).
 
 ### Migration Approaches
 
-#### Approach 1: File-by-File Migration (No Track 1)
+#### Approach 1: File-by-File Migration
 
 **Use Agent mode for direct translation:**
 
@@ -374,16 +362,16 @@ Requirements:
 Show original alongside migrated code.
 ```
 
-#### Approach 2: Domain-Guided Migration (With Track 1)
+#### Approach 2: Instruction-Guided Migration
 
-**If you completed Track 1, use domain context:**
+**Use your Copilot instructions file for consistent, context-aware translations:**
 
 **VS Code with Custom Agents:**
 
-1. **Create target domain specialist** (if migrating to new domain)
+1. **Create a target domain specialist agent** (see [Automating Migrations](#-automating-migrations-with-custom-agents--prompt-files))
 2. **Prompt:** *"Migrate #file:[source] to [TARGET] following our target domain standards."*
 
-**JetBrains or Without Custom Agents:**
+**Without Custom Agents:**
 
 **Prompt:**
 ```
@@ -391,7 +379,7 @@ Migrate this file to [TARGET] following:
 - Source: #file:[source-file]
 - Target standards: #file:.github/instructions/[target]-common.instructions.md
 
-Ensure migrated code matches target domain patterns.
+Ensure migrated code matches target stack patterns.
 ```
 
 ### Migrate by Layer
@@ -404,30 +392,12 @@ Migrate these data models from [SOURCE] to [TARGET]:
 #file:[source-models]
 
 For [TARGET_ORM/Framework]:
-- Map types appropriately (e.g., Python int → TypeScript number)
-- Translate relationships (ForeignKey, ManyToMany, etc.)
-- Migrate validation rules
+- Map types appropriately across the source and target type systems
+- Translate relationships (foreign keys, associations, etc.)
+- Migrate validation rules and constraints
 - Generate migration files if needed
 
 Show side-by-side comparison.
-```
-
-**Example: SQLAlchemy to Prisma**
-
-```
-# Source (Python/SQLAlchemy)
-class User(Base):
-    __tablename__ = 'users'
-    id = Column(Integer, primary_key=True)
-    email = Column(String, unique=True, nullable=False)
-    posts = relationship('Post', back_populates='author')
-
-# Target (Prisma Schema)
-model User {
-  id    Int    @id @default(autoincrement())
-  email String @unique
-  posts Post[]
-}
 ```
 
 #### 2. Business Logic
@@ -488,8 +458,8 @@ Migrate this algorithm from [SOURCE] to [TARGET]:
 [PASTE ALGORITHM]
 
 Challenges:
-- [e.g., "Uses Python list comprehensions heavily"]
-- [e.g., "Relies on dynamic typing"]
+- [e.g., "Uses source-language-specific syntax or idioms"]
+- [e.g., "Relies on framework-specific behaviour"]
 
 Provide:
 1. Direct translation
@@ -529,21 +499,15 @@ Help me:
 Identify any missing pieces or broken connections.
 ```
 
-**Run the migrated application:**
-```
-# Initialize dependencies (example for Node.js)
-npm init -y
-npm install
-
-# Run the application
-npm start
-```
+**Build and run the migrated application** using your target stack's standard commands (e.g., `mvn spring-boot:run`, `dotnet run`, `npm start`) and verify it starts without errors.
 
 > ⚠️ **Expect issues:** The migrated application may not work correctly on first run. This is normal—proceed to Part E to iteratively fix and validate.
 
 ---
 
 ## Part E: Validate & Iterate
+
+> 🕐 **Suggested time: 50 minutes**
 
 **Purpose:** Ensure migrated code works correctly through iterative testing and refinement.
 
@@ -663,9 +627,9 @@ Optimize this migrated code for [TARGET]:
 #file:[migrated-file]
 
 Leverage target-specific features:
-- [e.g., "Use TypeScript generics for type safety"]
-- [e.g., "Use Node.js streams for large data"]
-- [e.g., "Use React hooks for state"]
+- [e.g., "Use target framework's idiomatic patterns"]
+- [e.g., "Apply target language type system fully"]
+- [e.g., "Use built-in framework utilities instead of manual implementations"]
 
 Maintain functional equivalence while improving code quality.
 ```
@@ -674,267 +638,93 @@ Maintain functional equivalence while improving code quality.
 
 ## Example Migration Session
 
-### Scenario: Migrate Python Flask API to Node.js Express
+### Scenario: Migrating a Source Codebase to a Modern Target Stack
 
-#### Source Code (Python/Flask)
+This walkthrough shows the **process** to follow regardless of your specific source and target stacks. Substitute your actual stack where placeholders appear.
 
-```python
-# app.py
-from flask import Flask, request, jsonify
-from models import db, Book
-from sqlalchemy.exc import IntegrityError
-
-app = Flask(__name__)
-
-@app.route('/books', methods=['GET'])
-def get_books():
-    books = Book.query.all()
-    return jsonify([book.to_dict() for book in books])
-
-@app.route('/books/<int:id>', methods=['GET'])
-def get_book(id):
-    book = Book.query.get_or_404(id)
-    return jsonify(book.to_dict())
-
-@app.route('/books', methods=['POST'])
-def create_book():
-    data = request.get_json()
-    try:
-        book = Book(title=data['title'], author=data['author'])
-        db.session.add(book)
-        db.session.commit()
-        return jsonify(book.to_dict()), 201
-    except IntegrityError:
-        db.session.rollback()
-        return jsonify({"error": "Book already exists"}), 400
-    except KeyError as e:
-        return jsonify({"error": f"Missing field: {e}"}), 400
-```
-
-```python
-# models.py
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
-
-class Book(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200), nullable=False)
-    author = db.Column(db.String(100), nullable=False)
-    
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'title': self.title,
-            'author': self.author
-        }
-```
-
-#### Step 1: Analyze & Plan (Ask mode - Claude)
+#### Step 1: Analyze & Plan (Ask mode)
 
 **Prompt:**
 ```
-Analyze this Flask API for migration to Express + Prisma + TypeScript:
-[PASTE SOURCE CODE]
+Analyze this [SOURCE_FRAMEWORK] codebase for migration to [TARGET_FRAMEWORK]:
+#file:[entry-point] #file:[key-module]
 
-Provide migration plan with phases.
+Provide a migration plan with phases, complexity assessment, and dependency mapping.
 ```
 
-**AI Response:**
-- Phase 1: Setup Express + TypeScript project
-- Phase 2: Define Prisma schema (Book model)
-- Phase 3: Implement routes
-- Phase 4: Add validation & error handling
-- Phase 5: Testing
+**AI Response (example shape):**
+- Phase 1: Set up target project structure and tooling
+- Phase 2: Migrate data models and access layer
+- Phase 3: Migrate business logic and services
+- Phase 4: Migrate API / presentation layer
+- Phase 5: Add observability, error handling, and integration tests
 
 #### Step 2: Setup Target (Agent mode)
 
 **Prompt:**
 ```
-Setup Express + TypeScript + Prisma project:
-1. Initialize with proper tsconfig
-2. Install dependencies (express, prisma, etc.)
-3. Create folder structure (src/routes, src/models, etc.)
-4. Configure build scripts
+Setup a new [TARGET_FRAMEWORK] project:
+1. Initialise with recommended project structure
+2. Configure build tool and dependency manager
+3. Set up testing framework
+4. Configure linting and formatting
 ```
 
-#### Step 3: Migrate Models (Agent mode)
+#### Step 3: Migrate Data Layer (Agent mode)
 
 **Prompt:**
 ```
-Migrate this SQLAlchemy model to Prisma:
-[PASTE models.py]
+Migrate the data models in #file:[source-models] to [TARGET_ORM/DATA_LAYER].
 
-Generate Prisma schema and TypeScript types.
+Generate:
+- Target entity/model definitions
+- Repository or data access interfaces
+- Any schema migration files needed
 ```
 
-**AI Generates:**
+**What AI produces:** Target data model files with type definitions, repository interfaces, and any required schema or migration scripts — adapted to your target stack's conventions.
 
-```prisma
-// prisma/schema.prisma
-model Book {
-  id     Int    @id @default(autoincrement())
-  title  String @db.VarChar(200)
-  author String @db.VarChar(100)
-}
-```
-
-```typescript
-// src/types/book.ts
-export interface Book {
-  id: number;
-  title: string;
-  author: string;
-}
-```
-
-#### Step 4: Migrate Routes (Agent mode)
+#### Step 4: Migrate Business Logic and API Layer (Agent mode)
 
 **Prompt:**
 ```
-Migrate Flask routes to Express + TypeScript:
-[PASTE app.py]
+Migrate #file:[source-service] and #file:[source-controller] to [TARGET_FRAMEWORK].
 
 Use:
-- Express Router
-- Prisma Client
-- Proper TypeScript types
-- Async/await
-- Error handling middleware
+- [Target framework's routing/controller pattern]
+- [Target's error handling approach]
+- Proper type annotations for the target language
+- Async patterns appropriate to the target
 
-Maintain same endpoints and behavior.
+Maintain the same endpoints and behaviour.
 ```
 
-**AI Generates:**
-
-```typescript
-// src/routes/books.ts
-import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
-import { z } from 'zod';
-
-const router = Router();
-const prisma = new PrismaClient();
-
-// Validation schema
-const CreateBookSchema = z.object({
-  title: z.string().max(200),
-  author: z.string().max(100),
-});
-
-// GET /books
-router.get('/', async (req, res, next) => {
-  try {
-    const books = await prisma.book.findMany();
-    res.json(books);
-  } catch (error) {
-    next(error);
-  }
-});
-
-// GET /books/:id
-router.get('/:id', async (req, res, next) => {
-  try {
-    const id = parseInt(req.params.id);
-    const book = await prisma.book.findUnique({ where: { id } });
-    
-    if (!book) {
-      return res.status(404).json({ error: 'Book not found' });
-    }
-    
-    res.json(book);
-  } catch (error) {
-    next(error);
-  }
-});
-
-// POST /books
-router.post('/', async (req, res, next) => {
-  try {
-    const data = CreateBookSchema.parse(req.body);
-    const book = await prisma.book.create({ data });
-    res.status(201).json(book);
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return res.status(400).json({ 
-        error: 'Validation error', 
-        details: error.errors 
-      });
-    }
-    if (error.code === 'P2002') { // Prisma unique constraint
-      return res.status(400).json({ error: 'Book already exists' });
-    }
-    next(error);
-  }
-});
-
-export default router;
-```
+**What AI produces:** Migrated service and controller/handler files following target framework conventions, with error handling and validation translated to target idioms.
 
 #### Step 5: Validate (Agent mode)
 
 **Prompt:**
 ```
-Generate integration tests for migrated book API:
-- Test GET /books
-- Test GET /books/:id (found and not found)
-- Test POST /books (success, duplicate, missing fields)
+Generate integration tests for the migrated [FEATURE]:
+- Test all endpoints / public API surface
+- Cover success, not-found, and validation-error cases
 
-Use Jest + Supertest. Test against actual database.
+Use [TARGET_TEST_FRAMEWORK]. Reference #file:TESTPLAN.md for expected behaviour.
 ```
 
 **Prompt:**
 ```
-Compare Flask vs Express API:
-1. Are all endpoints functionally equivalent?
-2. Are error responses consistent?
-3. Any performance differences?
-4. Security considerations?
+Compare source and migrated implementations:
+1. Are all behaviours functionally equivalent?
+2. Are error responses consistent with the test plan?
+3. Any performance or security considerations in the target stack?
 ```
 
 ---
 
-## Common Migration Scenarios
-
-### Python → TypeScript/Node.js
-
-**Key Translations:**
-- Classes → Classes or interfaces + functions
-- List comprehensions → map/filter/reduce
-- Decorators → Higher-order functions or decorators
-- Context managers → try/finally or using patterns
-- Type hints → TypeScript types
-
-### Ruby/Rails → Node.js/Express
-
-**Key Translations:**
-- ActiveRecord → Sequelize/Prisma/TypeORM
-- Rails routes → Express routes
-- ERB templates → EJS/Handlebars/React
-- Rails helpers → Custom middleware
-- Gems → npm packages
-
-### JavaScript → TypeScript
-
-**Key Focus:**
-- Add type annotations
-- Convert implicit any → explicit types
-- Use interfaces for object shapes
-- Add generics where appropriate
-- Enable strict mode
-
-### Monolith → Microservices
-
-**Key Focus:**
-- Identify bounded contexts
-- Extract services by domain
-- Define service APIs
-- Handle distributed data
-- Implement inter-service communication
-
----
-
 ## 🤖 Automating Migrations with Custom Agents & Prompt Files
+
+> 🕐 **Suggested time: 30 minutes** — attempt only if core exercise (Parts A–E) is complete with time remaining.
 
 **Purpose:** Create reusable, automated migration workflows that ensure consistency across large codebases and team members.
 
@@ -947,26 +737,7 @@ The prompts and techniques you created earlier in this track can be leveraged fo
 | File migration patterns (Part D) | Create agents that apply consistent translation rules |
 | Validation techniques (Part E) | Add verification steps to automated workflows |
 
----
-
-If you completed **Track 1: Agent-Driven Development**, you already have custom agents and domain instructions that enhance your migration capabilities:
-
-| From Track 1 | Use in Migrations |
-|--------------|-------------------|
-| Domain instruction files | Reference in migration prompts for context-aware translations |
-| Custom specialist agents | Invoke for domain-specific code generation in target stack |
-| Coding standards | Ensure migrated code follows established patterns |
-
-**Quick Start:** If you created a `backend-specialist` agent in Track 1, try: Choose the backend-specialist agent and *"Migrate this Python service to TypeScript following our backend standards."*
-
----
-
-For JetBrains or Without Custom Agents
-
-Use **prompt templates** from [JETBRAINS_PROMPTS.md - Migration Section](JETBRAINS_PROMPTS.md#track-4-migration-prompts):
-- Copy migration prompts for your language pair
-- Manually add context: `#file:.github/instructions/[domain].instructions.md`
-- Use Ask/Agent modes as shown in examples
+> 💡 **Tip:** If you set up Copilot instructions in Part C Step 4, your migration agents will automatically apply your target stack's conventions — no need to repeat them in every prompt.
 
 ---
 
@@ -1030,8 +801,8 @@ You are a senior developer specializing in code migrations. Your role is to migr
 For each migration:
 \`\`\`
 ### Migration: [source-file] → [target-file]
-**Source:** path/to/source.py
-**Target:** path/to/target.ts
+**Source:** path/to/source-file.[ext]
+**Target:** path/to/target-file.[ext]
 **Complexity:** Low|Medium|High
 **Notes:** Any translation decisions or caveats
 
@@ -1050,7 +821,7 @@ Always check and follow these files when available:
 
 In VS Code Copilot Chat:
 1. Choose `migrator` from the Agent list
-2. Prompt: *"Migrate #file:src/models/user.py to TypeScript with Prisma"*
+2. Prompt: *"Migrate #file:[source-file] to [TARGET_FRAMEWORK]"*
 3. The agent follows its defined process automatically
 
 #### Step 3: Create Additional Agents Using Agent Mode
@@ -1072,9 +843,9 @@ This agent should:
 
 | Agent Name | Prompt to Create It |
 |------------|---------------------|
-| `model-migrator` | *"Create a data model migration agent based on #file:.github/agents/migrator.md that specializes in ORM translations (SQLAlchemy → Prisma, ActiveRecord → TypeORM)"* |
-| `api-migrator` | *"Create an API migration agent that focuses on route handlers, middleware, and request/response translations"* |
-| `test-migrator` | *"Create a test migration agent that converts test suites between frameworks (pytest → Jest, RSpec → Mocha)"* |
+| `model-migrator` | *"Create a data model migration agent based on #file:.github/agents/migrator.md that specialises in translating data models and ORM patterns from source to target stack"* |
+| `api-migrator` | *"Create an API migration agent that focuses on route handlers, middleware, and request/response contract translations"* |
+| `test-migrator` | *"Create a test migration agent that converts test suites from source test framework to target test framework, preserving all test cases and assertions"* |
 
 > 💡 **Tip:** Let AI do the heavy lifting! Once you have one well-crafted agent, use it as a template to generate others. This ensures consistency across your agent library.
 
@@ -1094,7 +865,7 @@ Run these prompts **in sequence**, reviewing output between each step:
 | 2 | `migrate-models.prompt.md` | Converts data models/schemas | Ensure types match, run schema validation |
 | 3 | `migrate-file.prompt.md` | Converts business logic (repeat per file) | Check each file compiles |
 | 4 | `migrate-api.prompt.md` | Converts routes/handlers | Verify route signatures match |
-| 5 | `link-imports.prompt.md` | Fixes imports across migrated files | Run `tsc` or equivalent to verify |
+| 5 | `link-imports.prompt.md` | Fixes imports across migrated files | Run compiler/build tool to verify |
 | 6 | `migrate-tests.prompt.md` | Converts test suite | Run tests, note failures |
 | 7 | `analyze-failure.prompt.md` | Debugs test failures (repeat as needed) | Fix until tests pass |
 
@@ -1198,20 +969,20 @@ List all files, map dependencies, and recommend migration order."
 
 For each file in the migration order, run the appropriate prompt:
 ```
-Run: /migrate-models → src/users/models.py
-Run: /migrate-file → src/users/service.py  
-Run: /migrate-api → src/users/routes.py
+Run: /migrate-models → [source models folder/file]
+Run: /migrate-file → [source service/domain file]
+Run: /migrate-api → [source controller/routes file]
 ```
 
 **Step 3: Link and Validate**
 ```
-Run: /link-imports → dist/users/
-Run: /migrate-tests → tests/users/
+Run: /link-imports → [target output folder]
+Run: /migrate-tests → [source test folder]
 ```
 
 **Step 4: Debug Failures with Agent**
 ```
-Choose the migrator agent: "Analyze the test failure in #file:tests/users/service.test.ts. 
+Choose the migrator agent: "Analyze the test failure in #file:[failing-test-file]. 
 Compare against #file:TESTPLAN.md and provide a targeted fix."
 ```
 
@@ -1221,12 +992,12 @@ For larger migrations, use the agent to process multiple files:
 
 **Prompt:**
 ```
-Choose the migrator agent: "Migrate all files in #file:src/models/ to TypeScript with Prisma.
+Choose the migrator agent: "Migrate all files in #file:[source-folder]/ to [TARGET_FRAMEWORK].
 
 For each file:
-1. Convert to TypeScript
-2. Replace SQLAlchemy with Prisma schema
-3. Generate corresponding interface types
+1. Convert to target language and framework patterns
+2. Translate data access and framework-specific code
+3. Generate any required supporting types or interfaces
 4. List any manual steps needed
 
 Process files in dependency order. Stop and report after each file."

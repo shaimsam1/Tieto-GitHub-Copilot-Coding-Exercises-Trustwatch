@@ -1,0 +1,5 @@
+{
+  "event": "PreToolUse",
+  "script": ".github/hooks/scripts/gatekeeper.sh",
+  "description": "Auto-approves safe read-only commands. Forces confirmation for destructive or network commands."
+}

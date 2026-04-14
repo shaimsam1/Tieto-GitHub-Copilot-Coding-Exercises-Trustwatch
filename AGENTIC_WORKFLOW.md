@@ -4,6 +4,38 @@ A step-by-step guide for building a complete project using an agentic workflow. 
 
 ---
 
+## Workshop Overview
+
+| Phase | Title | Time | Core / Stretch |
+|---|---|---|---|
+| [0](#phase-0--environment--project-foundation-20-min) | Environment & Project Foundation | ~20 min | Core |
+| [1](#phase-1--blueprint--research-30-min--hard-stop) | Blueprint & Research | ~30 min *(hard stop)* | Core |
+| [2](#phase-2--base--domain-instructions-20-min) | Base & Domain Instructions | ~20 min | Core |
+| [3](#phase-3--specialist-agents-25-min) | Specialist Agents | ~25 min | Core |
+| [4](#phase-4--skills-15-min--templates-pre-exist-in-github) | Skills | ~15 min | Core |
+| [5](#phase-5--feature-implementation-6090-min--one-backlog-item-end-to-end) | Feature Implementation | 60–90 min | Core |
+| [6](#phase-6--retrospective-15-min) | Retrospective | ~15 min | Core |
+| [7](#phase-7--stretch-hooks--orchestration-post-workshop--if-time-allows) | Hooks & Orchestration | open-ended | Stretch |
+| | **Core total** | **~3 h 25 min** | |
+
+> **Hard constraint** — Phase 1 must stop at 30 minutes regardless of completeness. An incomplete blueprint is better than no time left for implementation.
+
+---
+
+## Mode Reference
+
+Use this as a quick guide when deciding how to approach each step throughout the workflow.
+
+| Mode | When to use | Typical steps |
+|---|---|---|
+| **Ask** | Still deciding — no file edits needed; use AI as a sparring partner | Requirements, domain analysis, design, conceptual reviews |
+| **Plan** | Multi-file or sequenced work — review the plan before execution runs | Feature implementation, hook authoring, agent refactoring |
+| **Agent** | Well-scoped, direct execution — file creation, commands, tool invocations | Scaffolding files, running scripts, wiring infrastructure |
+
+> **Rule of thumb:** If you are still *deciding*, use Ask. If the task touches more than ~3 files or has a TDD sequence, use Plan first. Otherwise, use Agent directly.
+
+---
+
 ## Two Principles to Carry Through Every Phase
 
 1. **Human-in-the-loop.** Design your agents to stop and report back at key decision points. A human reviews, comments, and approves before work continues. An agent that runs end-to-end without checkpoints is a liability, not an asset.
@@ -24,9 +56,9 @@ Review this before you consider any phase complete:
 
 ---
 
-## Phase 0 — Environment & Project Foundation
+## Phase 0 — Environment & Project Foundation *(~20 min)*
 
-### 0.1 Select Your Project
+### 0.1 Select Your Project (Ask Mode)
 
 Choose what you want to build. Consider:
 - What problem does it solve?
@@ -44,7 +76,7 @@ Before anything else, confirm:
 
 Open your IDE's Chat panel, access the `...` menu, and select **Open Chat Debug View**. This reveals the agent's reasoning blocks, tool invocations, and skill/hook execution logs. Use it throughout every phase to understand *why* an agent made a decision.
 
-### 0.4 Create the Infrastructure Directories
+### 0.4 Create the Infrastructure Directories (Agent Mode)
 
 ```
 .github/agents/
@@ -58,7 +90,7 @@ These directories house every artefact you build. Nothing lives in ad-hoc locati
 
 ---
 
-## Phase 1 — Blueprint & Research
+## Phase 1 — Blueprint & Research *(~30 min — hard stop)*
 
 *Produce the foundational artefacts before writing a single line of implementation code.*
 
@@ -73,7 +105,7 @@ Open Ask mode. Use it as a sparring partner — not a code generator. Ask it to 
 
 Let the AI ask clarifying questions. The goal is to surface decisions you haven't made yet.
 
-### 1.2 Generate `BLUEPRINT.md`
+### 1.2 Generate `BLUEPRINT.md` (Ask Mode)
 
 Have the AI produce a project specification covering:
 - **Purpose and user scenarios** — who uses it, what they do, what they need to see
@@ -84,17 +116,7 @@ Have the AI produce a project specification covering:
 
 This is the single source of truth all subsequent agents reference.
 
-### 1.3 Generate `research.md`
-
-For domain-heavy projects, produce a research document covering:
-- Key domain concepts (what does each term mean in this context?)
-- Rules and thresholds embedded in the domain (e.g., what makes something "high risk"?)
-- Data field meanings and acceptable values
-- Edge cases and known data quality issues
-
-This ensures agents have domain knowledge without you re-explaining it every thread.
-
-### 1.4 Generate `developer_todo.md`
+### 1.3 Generate `developer_todo.md` (Ask Mode)
 
 Have the AI produce a phased task breakdown. Every task must:
 - Be completable in a **single agent context window** (a rough guide: ≤5 files touched)
@@ -104,15 +126,15 @@ Have the AI produce a phased task breakdown. Every task must:
 
 Tasks that are too large must be split. An agent that receives an oversized task will lose context mid-way.
 
-**Checkpoint:** Do not proceed to Phase 2 until `BLUEPRINT.md`, `research.md`, and `developer_todo.md` all exist and have been reviewed.
+**Checkpoint:** Do not proceed to Phase 2 until `BLUEPRINT.md` and `developer_todo.md` exist and have been reviewed.
 
 ---
 
-## Phase 2 — Base & Domain Instructions
+## Phase 2 — Base & Domain Instructions *(~20 min)*
 
 *Encoding your standards so every agent follows them without being told repeatedly.*
 
-### 2.1 Generate Base Custom Instructions
+### 2.1 Generate Base Custom Instructions (Ask Mode)
 
 Create `.github/copilot-instructions.md`. This file applies universally — it sets project-wide conventions. Use Ask mode (with `BLUEPRINT.md` as context) to generate it. Include:
 - Project purpose in one paragraph
@@ -122,26 +144,20 @@ Create `.github/copilot-instructions.md`. This file applies universally — it s
 
 These are the non-negotiables. Do not include domain-specific rules here.
 
-### 2.2 Identify Your Domains
+### 2.2 Identify Your Domains (Ask Mode)
 
-With the AI, analyse your project structure and identify distinct domains. Common examples:
-- **Data layer** — persistence, seeding, schema
-- **API layer** — request handling, response formatting, validation
-- **Business logic** — rules, scoring, pattern detection
-- **Presentation layer** — components, charts, state
-- **Tests** — unit and integration test conventions
+With the AI, identify 2–3 domains relevant to your project. For the workshop projects, typical domains are:
+- **Business logic** — risk scoring, pattern detection, or migration rules
+- **Presentation layer** — components, data loading, state
+- **Tests** — unit test conventions
 
-For each domain, define:
-- A glob pattern that matches its files
-- The key concerns specific to that domain (security, performance, patterns to use or avoid)
+For each, note a glob pattern (e.g. `src/logic/**`, `src/components/**`) and the key concerns. Capture this inline — you do not need a separate document.
 
-Document this in a `DOMAIN_STRUCTURE.md` file.
-
-### 2.3 Generate Domain Instruction Files
+### 2.3 Generate Domain Instruction Files (Agent Mode)
 
 For each domain, create a file in `.github/instructions/` named `<domain>.instructions.md`. Include in the YAML frontmatter an `applyTo` glob pattern that activates it automatically when matching files are open.
 
-Use the AI to generate each file. For each domain, research the best practices relevant to it before generating — ask the AI what the industry-standard concerns are for that domain in your chosen stack.
+Use the AI to generate each file. Provide the domain name, glob pattern, and your tech stack — the AI will apply appropriate best practices.
 
 Each instruction file should cover:
 - What to always do (patterns, validations, structure)
@@ -150,24 +166,19 @@ Each instruction file should cover:
 
 Do not duplicate guidance already in the base instructions.
 
-### 2.4 Validate for Contradictions
+### 2.4 Validate for Contradictions (Agent Mode)
 
-Open a fresh Agent mode session. Add all instruction files as context. Ask the AI:
-- Are there any contradictions between domain instructions and base instructions?
-- Are there gaps — important standards not covered anywhere?
-- Are any instructions ambiguous or likely to be interpreted inconsistently?
-
-Resolve every issue raised before moving on.
+Add all instruction files as context and ask: are there contradictions between domain and base instructions, or gaps in coverage? Resolve any issues before moving on. Keep this to 5 minutes.
 
 ---
 
-## Phase 3 — Specialist Agents
+## Phase 3 — Specialist Agents *(~25 min)*
 
 *Creating focused AI assistants with clear roles and enforced boundaries.*
 
-### 3.1 Design Your Specialists with AI
+### 3.1 Design Your Specialists with AI (Ask Mode)
 
-Use Ask mode with `DOMAIN_STRUCTURE.md` as context. For each domain, design a specialist agent:
+Use Ask mode with your domain list from 2.2 as context. For each domain, design a specialist agent:
 - What is its **single responsibility**?
 - What **tools** does it need? (file editing, terminal, search, problems — only what it genuinely needs)
 - What are its **explicit boundaries**? What files or domains must it never touch?
@@ -175,7 +186,7 @@ Use Ask mode with `DOMAIN_STRUCTURE.md` as context. For each domain, design a sp
 
 Document the design before creating any files.
 
-### 3.2 Create Specialist Agent Files
+### 3.2 Create Specialist Agent Files (Agent Mode)
 
 Create one `.agent.md` file per specialist in `.github/agents/`. Each file has YAML frontmatter defining the agent's name, description, allowed tools, and optionally a preferred model.
 
@@ -187,7 +198,7 @@ Each agent's instructions must include:
 - A reference to the relevant domain instruction file
 - A protocol for how it produces output (what format, what review steps)
 
-### 3.3 Create the Project Manager Agent
+### 3.3 Create the Project Manager Agent (Agent Mode)
 
 The PM agent is distinct from domain specialists. It:
 - Analyses the current state of the project
@@ -197,7 +208,7 @@ The PM agent is distinct from domain specialists. It:
 
 The PM should reference the `create-backlog-item` skill (which you will build in Phase 4) in its instructions so it always uses a consistent item structure.
 
-### 3.4 Validate Agent Boundaries
+### 3.4 Validate Agent Boundaries (Agent Mode)
 
 Test each specialist:
 - Ask a domain question it should answer — verify it answers correctly
@@ -206,11 +217,11 @@ Test each specialist:
 
 ---
 
-## Phase 4 — Skills
+## Phase 4 — Skills *(~15 min — templates pre-exist in `.github/`)*
 
 *Replacing LLM guesswork with deterministic, reusable capabilities.*
 
-### 4.1 Understand the Distinction
+### 4.1 Understand the Distinction (Ask Mode)
 
 A skill is not a custom instruction. It is a directory under `.github/skills/<name>/` containing:
 - A `SKILL.md` with a `name` and `description` in its YAML frontmatter
@@ -221,7 +232,7 @@ Skills are loaded on-demand when the agent judges them relevant. They are portab
 
 **Rule of thumb:** If an LLM might guess wrong, make it a script. If the value is in the structure (not the execution), make it a resource template.
 
-### 4.2 Create `create-backlog-item`
+### 4.2 Create `create-backlog-item` (Agent Mode)
 
 This skill ensures every backlog item has the same structure regardless of which agent creates it.
 
@@ -231,7 +242,7 @@ Create `.github/skills/create-backlog-item/` with:
 
 Reference this skill explicitly in the PM agent's instructions.
 
-### 4.3 Create `run-tests`
+### 4.3 Create `run-tests` (Agent Mode)
 
 This skill ensures agents run tests correctly — with the right command, the right flags, and structured output.
 
@@ -243,80 +254,28 @@ Create `.github/skills/run-tests/` with:
 
 This skill is reusable. Any agent that needs to verify tests can invoke it.
 
-### 4.4 Create `project-metrics`
+### 4.4 Create `project-metrics` (Agent Mode)
 
 This skill gives the PM agent deterministic project state so it does not guess.
 
 Create a script that collects: source file count by layer, test count, any lint or build status signals. The PM uses this before planning instead of scanning files manually.
 
-### 4.5 Additional Skills
-
-Think about what your agents do repeatedly and where a script would produce better results than the model guessing. For each candidate skill:
-- Create the directory structure
-- Write scripts that produce structured, parseable output
-- Keep each skill focused — a skill that tries to do too much loses effectiveness
-- Control visibility with `user-invocable` and `disable-model-invocation` frontmatter properties
-
-### 4.6 Create Workflow Prompt Files
+### 4.5 Create Workflow Prompt Files (Agent Mode)
 
 In `.github/prompts/`, create reusable prompt files that automate common multi-step tasks. Each file has YAML frontmatter specifying the mode and tools, and a body that guides the user through a structured workflow.
 
-Suggested prompts based on your project's required features:
-- One for creating a new data-layer component from a schema definition
-- One for creating an API endpoint with validation and error handling
-- One for creating a presentation-layer component connected to an API endpoint
+Suggested prompts for the workshop projects:
+- One for loading and transforming data from a JSON source
+- One for creating a UI component connected to a data source
+- One for the TDD loop sequence (write tests → confirm fail → implement → pass)
 
 ---
 
-## Phase 5 — Hooks
-
-*System-level guarantees that instructions alone cannot provide.*
-
-### 5.1 Understand the Distinction
-
-An instruction that says "always run the linter" is a suggestion the LLM may ignore. A hook that runs the linter is a guarantee.
-
-Hooks are shell commands that run at specific lifecycle points. They're defined in JSON files in `.github/hooks/`. Use them for guarantees, not guidance.
-
-Available lifecycle events: `SessionStart`, `UserPromptSubmit`, `PreToolUse`, `PostToolUse`, `PreCompact`, `SubagentStart`, `SubagentStop`, `Stop`.
-
-### 5.2 Build the Smart Gatekeeper (`PreToolUse`)
-
-Create a `PreToolUse` hook that inspects every terminal command before it runs:
-
-| Pattern type | Decision | Rationale |
-|---|---|---|
-| Read-only / safe commands | `allow` — auto-approve | No side effects; safe to run without supervision |
-| Destructive / network / irreversible | `ask` — force confirmation | Human must approve before execution |
-| Everything else | Pass through | Default VS Code approval flow handles it |
-
-The hook script reads the tool invocation JSON, extracts the command, matches it against allow and deny patterns, and writes a JSON output with the `permissionDecision` field.
-
-**Test it:** Run a safe command (should auto-approve). Run a destructive command (should prompt). Confirm in the Chat Debug View.
-
-### 5.3 Add a Post-Edit Quality Hook (`PostToolUse`)
-
-Create a `PostToolUse` hook that runs your linter or formatter after every file edit. This enforces code quality as a system guarantee, not a suggestion.
-
-### 5.4 Add the PM Audit Hook (Agent-Scoped)
-
-Add an agent-scoped hook to the PM agent's frontmatter. On `Stop`, append a timestamped entry to `.github/pm-audit.log`. This creates a persistent record of PM activity independent of chat history.
-
-Agent-scoped hooks run only when that agent is active. They are defined in the agent's `.agent.md` frontmatter using the `hooks` field.
-
-**Test it:** Run a PM session. Verify the log file updates. Verify the hook appears in the Chat Debug View.
-
-### 5.5 Consider a Test-Gate Hook
-
-A `Stop` hook that runs the full test suite before the agent session ends. If tests fail, the agent session blocks. Note: a `Stop` hook that blocks must check `stop_hook_active` to prevent infinite loops.
-
----
-
-## Phase 6 — Feature Implementation
+## Phase 5 — Feature Implementation *(60–90 min — one backlog item end-to-end)*
 
 *Using the full domain system to build the project's required features.*
 
-### 6.1 Select a Feature
+### 5.1 Select a Feature (Agent Mode)
 
 Review `developer_todo.md`. Use the PM agent to:
 1. Assess the current project state (using the `project-metrics` skill)
@@ -325,26 +284,26 @@ Review `developer_todo.md`. Use the PM agent to:
 
 Review the item. If it's too large (touches >5 files), ask the PM to split it. Approve the item before any implementation begins.
 
-### 6.2 Backend / Data Layer Implementation
+### 5.2 Data & Logic Layer Implementation (Plan Mode)
 
 Switch to the appropriate specialist agent. Use the relevant workflow prompt. Follow this sequence:
-1. Start with the data model and persistence layer
-2. Add the API or service layer on top
-3. Add validation and error handling
+1. Write the data-loading module that reads from the provided JSON files
+2. Add the business logic layer on top (risk scoring, pattern detection, or migration rules)
+3. Add error handling for missing or malformed data
 4. Ask the specialist to review the output for standard compliance before moving on
 
-Do not move to the presentation layer until the data and API layers are stable.
+Do not move to the presentation layer until the data and logic layers are stable and tested.
 
-### 6.3 Presentation Layer Implementation
+### 5.3 Presentation Layer Implementation (Plan Mode)
 
 Switch to the frontend specialist. Use the workflow prompt for the presentation component. Ensure it:
-- Connects to the API layer built in 6.2
+- Connects to the data/logic layer built in 5.2
 - Handles loading states, empty states, and errors
 - Meets the acceptance criteria from the backlog item
 
 Ask the specialist to evaluate the component for accessibility and user experience before signing off.
 
-### 6.4 Testing — Strict TDD Loop
+### 5.4 Testing — Strict TDD Loop (Plan Mode)
 
 Switch to the Test Engineer. The sequence must be:
 
@@ -356,89 +315,60 @@ Switch to the Test Engineer. The sequence must be:
 
 The Test Engineer must not skip to step 3. If it does, redirect it.
 
-### 6.5 Cross-Domain Validation
+### 5.5 Cross-Domain Validation (Agent Mode)
 
 Return to general Agent mode. Verify that the layers integrate correctly:
-- Does the frontend correctly consume the API?
+- Does the frontend correctly consume the data layer?
 - Do the tests cover the integration points, not just the units?
 - Ask for a final review of the complete feature for security, performance, and standards compliance
 
-### 6.6 Model Selection
+---
 
-Choose the right model for each task:
-- **Architectural and multi-file reasoning, security review** → highest-capability model (e.g., Claude Sonnet)
-- **Boilerplate generation, simple refactoring, documentation** → faster/cheaper model
-- Check the model comparison reference for your subscription tier and adjust accordingly
+## Phase 6 — Retrospective *(~15 min)*
+
+Look back at the workflow cycle just completed:
+- Where did agents stay within their boundaries — and where did they drift?
+- Which steps consumed the most time unexpectedly?
+- What would you change in the instructions or skills before running a second feature?
+- Open the Chat Debug View log: what can you learn from the tool invocations and skill/hook execution trace?
+
+Use the Open Questions at the end of this document as discussion prompts.
 
 ---
 
-## Phase 7 — Orchestration
+## Phase 7 — Stretch: Hooks & Orchestration *(post-workshop — if time allows)*
 
-*Automating the coordination that was manual in Phase 6.*
+*System-level guarantees and automated coordination. Tackle these after completing at least one full Phase 5 cycle.*
 
-### 7.1 Why Orchestrate
+### Hooks
 
-In Phase 6 you manually: switched between agents, copy-pasted plans, re-explained context. Orchestration automates exactly that. The key mechanism is the **context window economy**:
+An instruction that says "always run the linter" is a suggestion the LLM may ignore. A hook that runs the linter is a guarantee. Hooks are shell commands that run at specific lifecycle points, defined in JSON files in `.github/hooks/`.
 
-| Role | Context profile | Purpose |
-|---|---|---|
-| **Researcher** | Reads many files, produces a compact summary | Disposable context — run once, summarise, discard |
-| **Coordinator** | Sees only summaries, makes decisions | Must stay "blind" to file contents — only summaries |
-| **Implementer** | Receives precise instructions, writes code | No re-discovery needed |
+Available lifecycle events: `SessionStart`, `UserPromptSubmit`, `PreToolUse`, `PostToolUse`, `PreCompact`, `SubagentStart`, `SubagentStop`, `Stop`.
 
-Each agent runs in its own window. Separating roles keeps each window lean.
+**A. Smart Gatekeeper — `PreToolUse` (Plan Mode)**
 
-### 7.2 Design the Workflow
+The stub already exists in `.github/hooks/gatekeeper.json` and `.github/hooks/scripts/gatekeeper.sh`. Review it, adjust the safe/danger patterns for your project's commands, and test it: a safe command should auto-approve; a destructive command should prompt. Confirm both in the Chat Debug View.
 
-Before building anything, design the orchestration as a group. For each agent in the workflow, define:
-- **Input contract** — what structured input it receives
-- **Output contract** — what structured output it produces
-- **Tools** — only what it needs for its role
-- **Human checkpoints** — where it must stop and wait for approval
+**B. Post-Edit Quality Hook — `PostToolUse` (Agent Mode)**
 
-Design the orchestration diagram first. Validate it with the teacher agent if unsure.
+Create a `PostToolUse` hook JSON that runs your linter or formatter after every file edit. This enforces code quality as a system guarantee, not a suggestion.
 
-### 7.3 Convert Existing Agents to Subagents
+**C. PM Audit Hook — Agent-Scoped (Agent Mode)**
 
-- Set `user-invocable: false` on the PM and Implementer
-- Add an `Input/Output Contract` section to each agent's instructions
-- Review their tools lists — subagents often need fewer tools than human-invocable agents
+Add a `hooks` field to the PM agent's `.agent.md` frontmatter. On `Stop`, append a timestamped entry to `.github/pm-audit.log`. Verify the log updates after a PM session and that the hook appears in the Chat Debug View.
 
-### 7.4 Create the Coordinator Agent
+### Orchestration
 
-The Coordinator:
-- Has `tools: [agent]` only — **no file editing, no file reading**
-- Delegates all file reading to Researcher subagents
-- Delegates all file writing to worker subagents
-- Defines the full workflow sequence in its instructions
-- Stops for human approval after research and before implementation
+In Phase 5 you manually switched between agents and re-explained context each time. Orchestration eliminates that through three roles running in separate context windows:
 
-Use the `agents` frontmatter property to restrict which subagents it can invoke.
+| Role | Responsibility |
+|---|---|
+| **Coordinator** | Delegates to subagents, sees only summaries, never reads files directly |
+| **Researcher** | Reads files, returns a compact summary — context is disposable |
+| **Implementer** | Receives precise instructions, writes code |
 
-### 7.5 Create the Researcher Agent
-
-The Researcher:
-- Has read-only tools
-- Receives a specific question or scope from the Coordinator
-- Returns a compact, structured summary — never raw file contents
-- Its context is disposable — it reads everything it needs, summarises, and terminates
-
-### 7.6 Run a Feature End-to-End
-
-Give the Coordinator a feature request taken directly from your project's required features list. Observe:
-- Does the Coordinator delegate, or does it try to do everything itself?
-- Does it stop at the designated human checkpoints?
-- Are research summaries concise enough, or do they bloat the Coordinator's context?
-- Does the TDD cycle execute correctly in the subagent context?
-- Do skills (create-backlog-item, run-tests) and hooks (Smart Gatekeeper, post-edit linting) still fire in subagent sessions?
-
-**Iterate on agent instructions based on what you observe.** The first version will not be perfect.
-
-### 7.7 Add the PM → Coordinator Handoff (Stretch)
-
-Add a `handoffs` property to the PM agent's frontmatter pointing to the Coordinator. Update the PM's instructions: after producing a backlog item, it offers the user a handoff. The Coordinator receives the conversation and kicks off the implementation workflow.
-
-Test: ask the PM to propose a feature. It should offer the handoff. Accept it. Observe the Coordinator taking over.
+Key steps: set `user-invocable: false` on specialists, add I/O contracts to each agent's instructions, create a Coordinator with `tools: [agent]` only, and run one feature from `developer_todo.md` end-to-end.
 
 ---
 
@@ -447,16 +377,14 @@ Test: ask the PM to propose a feature. It should offer the handoff. Accept it. O
 | File | Produced by | Purpose |
 |---|---|---|
 | `BLUEPRINT.md` | Architect (Ask mode) | Technical decisions, data model, API surface, constraints |
-| `research.md` | Research (Ask mode) | Domain notes, rules, field meanings, edge cases |
 | `developer_todo.md` | Planning (Ask mode) | Phased task list with acceptance criteria and TDD requirements |
-| `DOMAIN_STRUCTURE.md` | Ask mode | Domains, glob patterns, key concerns per domain |
 | `.github/copilot-instructions.md` | Agent mode | Universal project conventions |
 | `.github/instructions/<domain>.instructions.md` | Agent mode | Domain-specific standards, activated by `applyTo` glob |
 | `.github/agents/<name>.agent.md` | Agent mode | Specialist agent definition (tools, boundaries, protocols) |
 | `.github/skills/<name>/SKILL.md` | Agent mode | Reusable skill with optional scripts and resource files |
 | `.github/prompts/<name>.prompt.md` | Agent mode | Reusable workflow automation prompts |
-| `.github/hooks/<name>.json` | Agent mode | Lifecycle hook definitions |
-| `.github/pm-audit.log` | PM audit hook | Timestamped record of PM agent sessions |
+| `.github/hooks/<name>.json` | Phase 7 stretch | Lifecycle hook definitions |
+| `.github/pm-audit.log` | Phase 7 stretch | Timestamped record of PM agent sessions |
 
 ---
 
@@ -466,18 +394,15 @@ Test: ask the PM to propose a feature. It should offer the handoff. Accept it. O
 |---|---|---|
 | Agent ignores instructions | Chat Debug View → context panel | Is the instruction file in context? Does the `applyTo` glob match? |
 | Skill never fires | Chat Debug View → skill log | Is the skill name in the agent's `agents` list or instructions? |
-| Hook doesn't run | Chat Debug View → execution log | Is the hook JSON valid? Is the event name correct? |
+| Hook doesn't run | Chat Debug View → execution log | Is the hook JSON valid? Is the event name correct? *(Phase 7 stretch)* |
 | Agent crosses domain boundary | Agent instructions | Is the boundary stated explicitly as a prohibition? |
-| Coordinator reads files itself | Coordinator tools list | Remove file-reading tools; delegate via Researcher |
 | TDD loop skipped | Implementer instructions | State the sequence explicitly: tests first, fail confirmation, then implementation |
-| Subagent ignores I/O contract | Subagent instructions | Add a dedicated `Input/Output Contract` section |
 
 ---
 
 ## Open Questions to Discuss at Each Phase
 
 - How specific should instructions be vs. how much should the model exercise judgment?
-- Which tasks genuinely need the most capable model, and which can use a faster one?
 - Where are the right human checkpoints — frequent enough to catch errors, infrequent enough not to defeat the purpose of automation?
 - Which skills are reusable across multiple agents, and which are agent-specific?
-- What happens when an agent fails mid-task? How does the Coordinator recover?
+- What happens when an agent produces incorrect output mid-task? How do you redirect it without losing context?

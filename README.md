@@ -1,15 +1,31 @@
 # GitHub Copilot Agent-Driven Development Workshop
 
+A hands-on workshop where participants build a project prototype entirely through an agentic workflow — using GitHub Copilot's Ask, Plan, and Agent modes together with specialist agents, reusable skills, and a strict TDD loop. No implementation code is provided; everything is produced through structured AI collaboration following [AGENTIC_WORKFLOW.md](AGENTIC_WORKFLOW.md).
+
+---
+
+## Contents
+
+- [Learning Goals](#learning-goals)
+- [Choosing Your Project](#choosing-your-project)
+- [Getting Started](#getting-started)
+- [Project 1 — Transaction Risk Alert Dashboard](#project-1--transaction-risk-alert-dashboard)
+- [Project 2 — AML Pattern Detection Dashboard](#project-2--aml-pattern-detection-dashboard)
+- [Project 3 — Legacy Banking System Modernisation](#project-3--legacy-banking-system-modernisation-migrate--modernize-track)
+- [Mock Data Strategy](#mock-data-strategy)
+- [Recommended Stack](#recommended-stack)
+- [Workshop Flow](#workshop-flow)
+- [Agentic Workflow Reference](#agentic-workflow-reference)
 
 ---
 
 ## Learning Goals
 
-- **Adopt an Agentic Workflow**: Practice building a complete prototype using a Copilot agent as your primary development partner
-- **Practice Blueprint Creation**: Collaborate with an AI Architect to establish foundational technical decisions before writing any code
-- **Practice Thread Isolation**: Manage complexity by assigning distinct, single-purpose tasks to separate, isolated agent threads
-- **Utilise AI for Planning**: Use the agent not just for coding, but as a strategic partner to generate a project roadmap and `TODO.md`
-- **Task Decomposition**: Break the project goal into small, well-defined tasks that a focused agent can complete in a single thread
+- **Use the Right Mode**: Know when to reach for Ask (sparring partner), Plan (review before execution), or Agent (direct execution), and why the distinction matters
+- **Blueprint Before Building**: Use AI to produce `BLUEPRINT.md` and `developer_todo.md` before writing a single line of implementation code
+- **Author Specialist Agents**: Create focused agents with clearly defined responsibilities, minimal tool sets, and explicit domain boundaries
+- **Replace Guesswork with Skills**: Build reusable skills that give agents deterministic capabilities — consistent backlog item structure, correct test execution, reliable project state
+- **Implement End-to-End with TDD**: Drive one backlog item from data layer through to a tested UI component using the strict test-first loop
 
 ---
 
@@ -17,17 +33,11 @@
 
 | | Project 1 | Project 2 | Project 3 |
 |---|---|---|---|
-| **Name** | Transaction Risk Alert Dashboard | AML Pattern Detection Dashboard | Legacy Banking System Modernisation |
-| **Complexity** | Beginner–Intermediate | Intermediate–Advanced | Advanced |
-| **Data Source** | Mock REST API (Spring Boot) | Mock REST API (Spring Boot) | Provided legacy starter codebase |
-| **Data Focus** | Per-account transaction risk | Account network AML patterns | Account + transaction data migration |
+| **Name** | Transaction Risk Alert Dashboard | AML Pattern Detection Dashboard | Legacy System Modernisation |
+| **Data Source** | Static JSON data files (provided) | Static JSON data files (provided) | External open-source starter repos (choose one) |
+| **Data Focus** | Per-account transaction risk | Account network AML patterns | Code migration |
 | **AI Integration** | Display only | Display + rule-based analysis | Migration planning + code generation |
 | **Best For** | Learning the agentic workflow basics | Complex domain modelling and graph data | Modernising legacy systems with AI |
-
-**Recommendation:**
-- New to agentic workflows? Start with **Project 1**
-- Comfortable with domain modelling? Try **Project 2** for graph data and compliance logic
-- Want to modernise a legacy system using AI assistance? Choose **Project 3**
 
 ---
 
@@ -35,9 +45,7 @@
 
 1. **Choose your project** from the table above
 2. **Review the mock data schema** for your chosen project (defined in each project section below)
-3. **Choose your path:**
-   - **Path A — spec-kit workflow**: Streamlined development using pre-defined prompt files
-   - **Path B — manual multi-agent workflow**: Deeper understanding through direct agent collaboration
+3. **Follow the agentic workflow**: Use [AGENTIC_WORKFLOW.md](AGENTIC_WORKFLOW.md) as your step-by-step guide through blueprinting, instruction authoring, specialist agent creation, and feature implementation. All participants follow the same workflow — the project you chose determines the domain.
 
 ---
 
@@ -45,11 +53,11 @@
 
 ### Objective
 
-Build a web application that helps a bank's operations team make rapid risk decisions by visualising real-time transaction risk indicators for customer accounts using mock transaction data served from an in-memory Spring Boot backend.
+Build a web application that helps a bank's operations team make rapid risk decisions by visualising transaction risk indicators for customer accounts. Mock data is provided as static JSON files — no backend to build.
 
 ### Goal
 
-Practice the agentic workflow (Path A or Path B) to develop a complete, functional web application from initial specification through to implementation — all without a real external API.
+Practice the agentic workflow to develop a complete, functional web application from initial specification through to a working frontend — using the provided `data/transactions.json` as your data source.
 
 ### Scenario
 
@@ -59,7 +67,7 @@ You are a developer at a fintech company. The fraud operations team needs a tool
 
 #### 1. Account Search and Data Retrieval
 - Accept input by account ID or customer name
-- Fetch mock transaction data from the local Spring Boot mock API
+- Load mock transaction data from the provided `data/transactions.json` file
 - Display the current fraud indicator signals (velocity anomaly, geo-anomaly, unusual merchant category, high-value spike)
 - Handle missing accounts and empty transaction histories gracefully
 
@@ -94,7 +102,7 @@ Transaction
   status           : Enum (APPROVED, PENDING_REVIEW, BLOCKED)
 ```
 
-Seed data: ~500 transactions across 50 accounts, with 5–10 accounts pre-flagged for high-risk patterns.
+Seed data: Provided as `data/transactions.json`.
 
 ---
 
@@ -102,11 +110,11 @@ Seed data: ~500 transactions across 50 accounts, with 5–10 accounts pre-flagge
 
 ### Objective
 
-Build a compliance monitoring dashboard that helps an Anti-Money Laundering (AML) team visualise suspicious transaction chains and account networks, detect known AML typologies, and prioritise which accounts require a Suspicious Activity Report (SAR) or further investigation.
+Build a compliance monitoring dashboard that helps an Anti-Money Laundering (AML) team visualise suspicious transaction chains and account networks, detect known AML typologies, and prioritise which accounts requiring a Suspicious Activity Report (SAR) or further investigation. Mock data is provided as static JSON files — no backend to build.
 
 ### Goal
 
-Practice the agentic workflow to develop a complete, functional web application. Learn to decompose a complex compliance domain into manageable epics and tasks while maintaining consistency through shared documentation artefacts (`BLUEPRINT.md`, `developer_todo.md`).
+Practice the agentic workflow to develop a complete, functional web application. Learn to decompose a complex compliance domain into manageable epics and tasks while maintaining consistency through shared documentation artefacts (`BLUEPRINT.md`, `developer_todo.md`). Use the provided `data/accounts.json` and `data/transaction-edges.json` as your data source.
 
 ### Scenario
 
@@ -115,7 +123,7 @@ You are a developer at a bank's financial crime unit. The compliance team uses v
 ### Required Features
 
 #### 1. Transaction Chain Display
-- Fetch and display paginated transaction histories for individual accounts
+- Load and display paginated transaction histories for individual accounts from the provided JSON data
 - Show relationship metadata: sending account, receiving account, intermediary hops
 - Filter by date range, transaction type, and AML flag status
 - Display account network as a graph (nodes = accounts, edges = transactions)
@@ -172,113 +180,141 @@ TransactionEdge
   isFlagged       : Boolean
 ```
 
-Seed data: 50 accounts with relationship edges forming a directed transaction graph; 10 accounts pre-configured with embedded suspicious patterns across all four typologies.
+Seed data: 50 accounts with relationship edges forming a directed transaction graph; 10 accounts pre-configured with embedded suspicious patterns across all four typologies. Provided as `data/accounts.json` and `data/transaction-edges.json`.
 
 ---
 
-## Project 3 — Legacy Banking System Modernisation (Migrate & Modernize Track)
+## Project 3 — Legacy System Modernisation (Migrate & Modernize Track)
 
 ### Objective
 
-Use GitHub Copilot as your migration co-pilot to modernise a provided legacy banking monolith — moving it from an older Java/Spring MVC stack to a production-ready Spring Boot 3.x application, complete with updated data access patterns, a clean REST API, and observability.
+Use GitHub Copilot as your migration co-pilot to modernise a real open-source codebase. Clone one of the three provided starter repositories, analyse it with Copilot's help, generate a migration plan, execute incremental refactoring steps, and validate the modernised application — all driven by isolated agent tasks.
 
 ### Goal
 
-Practice the agentic workflow in a real-world migration context. Rather than building from scratch, you will analyse existing legacy code with Copilot's help, generate a migration plan, execute incremental refactoring steps, and validate the modernised application — all driven by isolated agent tasks.
+Practice the agentic workflow in a real-world migration context. Rather than building from scratch, you will analyse an actual public codebase, identify what needs to change, and drive the transformation layer by layer using structured AI collaboration.
 
-### Scenario
+### Starter Repositories — Choose One
 
-You have inherited a legacy account management system built on Spring Framework 4.x and JDBC templates. The system handles core banking operations but is difficult to maintain, lacks observability, and cannot be deployed to a container platform. Your task is to migrate it to Spring Boot 3.x, replace raw JDBC with Spring Data JPA, expose a modern REST API, and add structured logging and health endpoints.
+| Option | Repository | Source Stack | Suggested Migration Target |
+|---|---|---|---|
+| **A** | [ContosoUniversity](https://github.com/jasontaylordev/ContosoUniversity) | .NET 6 / ASP.NET Razor Pages / EF Core / C# | .NET 8 Minimal API + React frontend (decoupled SPA) |
+| **B** | [uportal-messaging](https://github.com/UW-Madison-DoIT/uportal-messaging) | Java / Spring Boot 2.x / Maven / JUnit 4 | Spring Boot 3.x + Spring Data JPA + JUnit 5 + Actuator |
+| **C** | [docraptor-java](https://github.com/DocRaptor/docraptor-java) | Java / OpenAPI-generated client / Gradle | Java 21 + Spring Boot 3.x wrapper service + REST API |
+
+Fork your chosen repository and use it as your migration baseline.
 
 ### What Makes This Track Different
 
-- **Migration-first mindset**: You start from existing code, not a blank slate
-- **AI-assisted analysis**: Use Copilot to understand legacy patterns before changing them
+- **Migration-first mindset**: You start from existing public code, not a blank slate
+- **AI-assisted analysis**: Use Copilot to understand source patterns before changing them
 - **Incremental refactoring**: Each agent task moves one layer forward without breaking the others
 - **Validation at every step**: Copilot generates tests before and after each migration step
 
+### Migration Guide
+
+Follow [MIGRATION.md](MIGRATION.md) as your step-by-step guide throughout this track. The table below maps each deliverable to the relevant section:
+
+| Deliverable | MIGRATION.md section |
+|---|---|
+| Source code analysis + migration plan | [Part A — Plan Migration Strategy](MIGRATION.md#part-a-plan-migration-strategy-with-ai) |
+| Understand architecture and data flows | [Part B — Understand Source Code](MIGRATION.md#part-b-understand-source-code) |
+| Set up target environment and test plan | [Part C — Setup Target Environment & Test Plan](MIGRATION.md#part-c-setup-target-environment--test-plan) |
+| Incremental code migration by layer | [Part D — Migrate Code with AI](MIGRATION.md#part-d-migrate-code-with-ai) |
+| Validate, test, and iterate | [Part E — Validate & Iterate](MIGRATION.md#part-e-validate--iterate) |
+| Automate with agents and prompt files | [Automating Migrations](MIGRATION.md#-automating-migrations-with-custom-agents--prompt-files) |
+
 ### Required Deliverables
 
-#### 1. Legacy Code Analysis
-- Use Copilot to audit the provided legacy codebase and produce a `migration-plan.md`
-- Identify deprecated APIs, JDBC template usages, XML bean definitions, and missing test coverage
-- Map existing endpoints and data models to their modern Spring Boot equivalents
+#### 1. Source Code Analysis
+- Fork and clone your chosen starter repository
+- Use Copilot to audit the codebase and produce a `migration-plan.md` — follow [Part A](MIGRATION.md#part-a-plan-migration-strategy-with-ai) and [Part B](MIGRATION.md#part-b-understand-source-code)
+- Identify deprecated APIs, outdated dependencies, missing test coverage, and architectural gaps
+- Map existing endpoints and data models to their modern equivalents
 - Document breaking changes and migration risks
 
 #### 2. Core Migration
-- Replace XML Spring configuration with `@SpringBootApplication` and Java config
-- Migrate JDBC templates to Spring Data JPA repositories with H2 for development
-- Introduce a layered architecture: Controller → Service → Repository
-- Expose the migrated functionality as a documented REST API (Spring Web)
-- Add Actuator health and info endpoints
+- Upgrade the build tool configuration and dependency versions
+- Introduce a clean layered architecture appropriate to the target stack
+- Expose or modernise the API surface with proper request/response contracts — follow [Part C](MIGRATION.md#part-c-setup-target-environment--test-plan) and [Part D](MIGRATION.md#part-d-migrate-code-with-ai)
+- Replace deprecated patterns with current framework equivalents
+- Add health and info endpoints (Actuator or equivalent)
 
 #### 3. Modernisation & Observability
-- Add structured JSON logging with contextual MDC fields (account ID, request ID)
-- Add `@ControllerAdvice` global error handling with RFC 7807 problem details
-- Write JUnit 5 integration tests covering the migrated endpoints
+- Add structured logging with contextual fields (request ID, relevant domain IDs)
+- Add global error handling with standardised problem details (RFC 7807 or equivalent)
+- Write integration tests covering the migrated endpoints — follow [Part E](MIGRATION.md#part-e-validate--iterate)
 - Produce a `migration-report.md` summarising what changed, what was removed, and what was improved
 
-### Legacy Codebase Schema (provided as starting point)
+### Technical Migration Path by Option
 
-```
-LegacyAccount (JDBC-mapped)
-  account_id      : VARCHAR (primary key)
-  customer_name   : VARCHAR
-  iban            : VARCHAR
-  account_type    : VARCHAR ('PERSONAL', 'BUSINESS')
-  balance         : DECIMAL
-  opened_date     : DATE
-  status          : VARCHAR ('ACTIVE', 'FROZEN', 'CLOSED')
+**Option A — ContosoUniversity (.NET)**
 
-LegacyTransaction (JDBC-mapped)
-  transaction_id  : VARCHAR (primary key)
-  account_id      : VARCHAR (foreign key)
-  amount          : DECIMAL
-  currency        : VARCHAR
-  description     : VARCHAR
-  transaction_date : TIMESTAMP
-  status          : VARCHAR ('COMPLETED', 'PENDING', 'FAILED')
-```
-
-A skeleton legacy project (Spring 4.x, XML config, raw JDBC) is provided in the `legacy-starter/` folder as your migration baseline.
-
-### Technical Migration Path
-
-| Phase | From (Legacy) | To (Modern) |
+| Phase | From | To |
 |---|---|---|
-| Configuration | XML beans (`applicationContext.xml`) | `@SpringBootApplication` + Java config |
-| Data access | `JdbcTemplate` row mappers | Spring Data JPA + `@Entity` + `@Repository` |
-| REST layer | Spring MVC `@Controller` + JSP | Spring Boot `@RestController` + JSON |
-| Error handling | Manual try/catch in controllers | `@ControllerAdvice` + problem details |
-| Testing | JUnit 4 + manual wiring | JUnit 5 + `@SpringBootTest` |
+| Architecture | Razor Pages monolith | Minimal API backend + React SPA |
+| Data access | EF Core + DbContext in pages | Repository pattern + EF Core 8 |
+| API layer | Page handlers | `app.MapGroup()` Minimal API endpoints |
+| Error handling | Page-level try/catch | `IProblemDetailsService` middleware |
+| Testing | xUnit + in-process | xUnit + `WebApplicationFactory` |
+
+**Option B — uportal-messaging (Java)**
+
+| Phase | From | To |
+|---|---|---|
+| Boot version | Spring Boot 2.x | Spring Boot 3.x |
+| Data access | JPA / JDBC (older patterns) | Spring Data JPA + `@Repository` |
+| REST layer | `@RestController` (review & modernise) | `@RestController` + OpenAPI docs |
+| Error handling | Ad-hoc exception handling | `@ControllerAdvice` + RFC 7807 |
+| Testing | JUnit 4 | JUnit 5 + `@SpringBootTest` |
+| Observability | Basic logging | Spring Actuator + structured logging |
+
+**Option C — docraptor-java (Java SDK → Service)**
+
+| Phase | From | To |
+|---|---|---|
+| Structure | OpenAPI-generated client library | Spring Boot 3.x wrapper service |
+| Java version | Java 8 | Java 21 |
+| Build | Gradle (legacy config) | Gradle 8 + updated dependencies |
+| API layer | None (library only) | `@RestController` REST endpoints |
+| Testing | Basic JUnit | JUnit 5 + `@SpringBootTest` |
 | Observability | None | Spring Actuator + structured logging |
 
 ---
 
-## Mock Data Generation — Common Strategy (All Projects)
+## Mock Data Strategy
 
-All projects use the same approach to avoid requiring real external APIs:
+**Projects 1 & 2** use pre-generated static JSON files — no server or database setup required.
 
 | Concern | Approach |
 |---|---|
-| Realistic data values | `java-faker` library for IBANs, names, amounts, merchant names, countries |
-| Data loading | `DataInitializer` bean using `@EventListener(ApplicationReadyEvent.class)` |
-| Storage | H2 in-memory database with JPA entities — no database setup needed |
-| Profile switching | `@Profile("mock")` so real data sources can be plugged in later |
-| Embedded patterns | Suspicious patterns, risk spikes, and AML typologies baked into seed data intentionally |
+| Data files | Provided in `data/` at the repo root — load via `fetch('./data/<file>.json')` |
+| Realistic values | Pre-generated: realistic IBANs, names, amounts, merchant names, countries |
+| Embedded patterns | Suspicious patterns, risk spikes, and AML typologies baked into the seed data intentionally |
+| No server needed | All data is read directly from disk — no Spring Boot, no database |
+
+**Project 3** uses a forked external open-source repository as its baseline — fork your chosen starter repo (see Project 3 section) and no separate data files are needed.
 
 ---
 
-## Recommended Java Stack
+## Recommended Stack
+
+**Projects 1 & 2 — Frontend**
 
 | Layer | Technology |
 |---|---|
-| Framework | Spring Boot 3.x |
-| Data | Spring Data JPA + H2 |
-| REST | Spring Web (mock API endpoints) |
-| Mock generation | java-faker |
-| Testing | JUnit 5 + Mockito |
-| Build | Maven (multi-module structure recommended) |
+| Framework | Your choice — React, Vue, vanilla JS, or any frontend stack |
+| Data | Static JSON files via `fetch()` — no API calls to a server |
+| Testing | Vitest / Jest or equivalent |
+| Build | Vite or equivalent |
+
+**Project 3 — Migration (stack depends on chosen starter)**
+
+| Option | Target Framework | Data | REST | Testing | Build |
+|---|---|---|---|---|---|
+| A (ContosoUniversity) | .NET 8 Minimal API + React | EF Core 8 | `app.MapGroup()` | xUnit + WebApplicationFactory | .NET CLI |
+| B (uportal-messaging) | Spring Boot 3.x | Spring Data JPA + H2 | `@RestController` | JUnit 5 + Mockito | Maven |
+| C (docraptor-java) | Spring Boot 3.x | N/A (HTTP client) | `@RestController` | JUnit 5 + Mockito | Gradle 8 |
 
 ---
 
@@ -286,25 +322,26 @@ All projects use the same approach to avoid requiring real external APIs:
 
 | Phase | Activity | Approx. Duration |
 |---|---|---|
-| 0 | Intro: agentic workflow concepts, Copilot agent modes, workspace setup | 30 min |
-| 1 | Project selection + mock data schema walkthrough | 15 min |
-| 2 | **Blueprint phase**: Architect agent produces `BLUEPRINT.md` (tech decisions, data model, API design) | 30 min |
-| 3 | **Planning phase**: Agent generates `developer_todo.md` with phased task breakdown | 20 min |
-| 4 | **Implementation**: thread-isolated agent tasks (mock data → service layer → REST API → frontend) | 90 min |
-| 5 | **Test phase**: Test Engineer agent generates JUnit 5 and integration tests | 30 min |
-| 6 | Demo + retrospective | 30 min |
+| 0 | Intro: agentic workflow concepts, Copilot agent modes, workspace setup | 20 min |
+| 1 | Project selection + data schema walkthrough | 10 min |
+| 2 | **Blueprint phase**: Architect agent produces `BLUEPRINT.md` (tech decisions, data model, API design) — hard stop at 30 min | 30 min |
+| 3 | **Planning phase**: PM agent generates `developer_todo.md`, selects first backlog item | 20 min |
+| 4 | **Implementation**: specialist agents — data layer → logic → first UI component (one backlog item end-to-end) | 90 min |
+| 5 | **Test phase**: Test Engineer writes and runs failing tests → implementation → green | 30 min |
+| 6 | Demo + retrospective: what did the agents do well, where did they need redirecting? | 20 min |
 
 ---
 
 ## Agentic Workflow Reference
 
-Refer to the original [Agents and Prompts guide](https://github.com/EficodeDemoOrg/copilot-advanced-exercise-vaisala/blob/main/Agents%20and%20Prompts.md) for the full breakdown of agent roles, thread isolation protocols, and memory persistence strategies. The same workflow applies here — only the domain has changed.
+Follow [AGENTIC_WORKFLOW.md](AGENTIC_WORKFLOW.md) for the full step-by-step guide covering all phases from blueprinting through to feature implementation. It includes mode guidance (Ask / Plan / Agent), time estimates, and a design checklist to review at the end of each phase.
 
 **Key artefacts to produce in every project:**
 
 | File | Produced by | Purpose |
 |---|---|---|
-| `BLUEPRINT.md` | Architect agent | Technical decisions, data model, API surface, constraints |
-| `research.md` | Research agent | Domain notes, compliance rules, data field meanings |
-| `developer_todo.md` | Planning agent | Phased task list with acceptance criteria per task |
+| `BLUEPRINT.md` | Architect agent (Ask mode) | Technical decisions, data model, API surface, constraints |
+| `developer_todo.md` | Planning agent (Ask mode) | Phased task list with acceptance criteria per task |
+| `.github/copilot-instructions.md` | Agent mode | Universal project conventions |
+| `.github/agents/<name>.agent.md` | Agent mode | Specialist agent definitions |
 | `README.md` | Developer agent | Running instructions, architecture summary |
