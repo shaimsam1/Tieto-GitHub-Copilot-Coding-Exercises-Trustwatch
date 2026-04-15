@@ -1,8 +1,8 @@
 ---
 name: Agent Name
 description: One-line description of what this agent does and nothing else.
-tools: [read_file, write_file, search_workspace]
-model: gpt-4o
+tools: [read/readFile, write/writeFile, search/codebase]
+model: GPT-5.2 (copilot)
 ---
 
 ## Responsibility

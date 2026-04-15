@@ -1,7 +1,7 @@
 ---
 name: Project Manager
 description: Plans work. Does not implement. Produces backlog items using the create-backlog-item skill.
-tools: [read_file, search_workspace]
+tools: [read/readFile, search/codebase]
 model: Claude Opus 4.6 (copilot)
 ---
 

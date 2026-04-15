@@ -1,6 +1,6 @@
 # GitHub Copilot Agent-Driven Development Workshop
 
-A hands-on workshop where participants build a project prototype entirely through an agentic workflow — using GitHub Copilot's Ask, Plan, and Agent modes together with specialist agents, reusable skills, and a strict TDD loop. No implementation code is provided; everything is produced through structured AI collaboration following [AGENTIC_WORKFLOW.md](AGENTIC_WORKFLOW.md).
+A hands-on workshop where participants build a project prototype entirely through an agentic workflow — using GitHub Copilot's Ask, Plan, and Agent modes together with specialist agents, reusable skills, and a strict TDD loop. No implementation code is provided; everything is produced through structured AI collaboration.
 
 ---
 
@@ -13,9 +13,6 @@ A hands-on workshop where participants build a project prototype entirely throug
 - [Project 2 — AML Pattern Detection Dashboard](#project-2--aml-pattern-detection-dashboard)
 - [Project 3 — Legacy System Modernisation](#project-3--legacy-system-modernisation-migrate--modernize-track)
 - [Mock Data Strategy](#mock-data-strategy)
-- [Recommended Stack](#recommended-stack)
-- [Workshop Flow](#workshop-flow)
-- [Agentic Workflow Reference](#agentic-workflow-reference)
 
 ---
 
@@ -39,13 +36,29 @@ A hands-on workshop where participants build a project prototype entirely throug
 | **AI Integration** | Display only | Display + rule-based analysis | Migration planning + code generation |
 | **Best For** | Learning the agentic workflow basics | Complex domain modelling and graph data | Modernising legacy systems with AI |
 
+#### 🌱 Greenfield — Bring Your Own Idea
+ 
+Not interested in the predefined projects? Have a project idea you've been wanting to build? This is your chance! Build something from scratch with the help of GitHub Copilot. Our team will be on hand to help you along the way — just raise your hand or find us in the breakout rooms.
+ 
+> **💡 Tip:** Not sure what to build? Use **Plan Mode** in GitHub Copilot (press `Shift+Tab` in the CLI or select "Plan" in VS Code Copilot Chat) to brainstorm and spar with Copilot. Describe your interests or problem domain and let Copilot help you shape an idea, outline an architecture, and break it down into actionable steps — before writing a single line of code!
+
+
+#### 🛠️ GitHub Copilot For Beginners
+ 
+Want to start from the basics? Follow a guided, hands-on workshop to learn GitHub Copilot from the ground up using the CLI:
+ 
+👉 **[Copilot CLI for Beginners](https://github.com/github/copilot-cli-for-beginners/)**
+ 
+> **Note:** The techniques and patterns you learn in this workshop apply equally to VS Code with GitHub Copilot — completions, chat, and agent mode all work the same way. Feel free to follow along in whichever tool you prefer!
 ---
 
 ## Getting Started
 
 1. **Choose your project** from the table above
 2. **Review the mock data schema** for your chosen project (defined in each project section below)
-3. **Follow the agentic workflow**: Use [AGENTIC_WORKFLOW.md](AGENTIC_WORKFLOW.md) as your step-by-step guide through blueprinting, instruction authoring, specialist agent creation, and feature implementation. All participants follow the same workflow — the project you chose determines the domain.
+3. **Follow the guide for your track**:
+   - **Projects 1 & 2**: Use [AGENTIC_WORKFLOW.md](AGENTIC_WORKFLOW.md) as your step-by-step guide through blueprinting, instruction authoring, specialist agent creation, and feature implementation. Can be used for Greenfield projects too!
+   - **Project 3**: Use [MIGRATION.md](MIGRATION.md) as your step-by-step guide through source analysis, migration planning, incremental code transformation, and validation.
 
 ---
 
@@ -204,47 +217,9 @@ Practice the agentic workflow in a real-world migration context. Rather than bui
 
 Fork your chosen repository and use it as your migration baseline.
 
-### What Makes This Track Different
-
-- **Migration-first mindset**: You start from existing public code, not a blank slate
-- **AI-assisted analysis**: Use Copilot to understand source patterns before changing them
-- **Incremental refactoring**: Each agent task moves one layer forward without breaking the others
-- **Validation at every step**: Copilot generates tests before and after each migration step
-
 ### Migration Guide
 
 Follow [MIGRATION.md](MIGRATION.md) as your step-by-step guide throughout this track. The table below maps each deliverable to the relevant section:
-
-| Deliverable | MIGRATION.md section |
-|---|---|
-| Source code analysis + migration plan | [Part A — Plan Migration Strategy](MIGRATION.md#part-a-plan-migration-strategy-with-ai) |
-| Understand architecture and data flows | [Part B — Understand Source Code](MIGRATION.md#part-b-understand-source-code) |
-| Set up target environment and test plan | [Part C — Setup Target Environment & Test Plan](MIGRATION.md#part-c-setup-target-environment--test-plan) |
-| Incremental code migration by layer | [Part D — Migrate Code with AI](MIGRATION.md#part-d-migrate-code-with-ai) |
-| Validate, test, and iterate | [Part E — Validate & Iterate](MIGRATION.md#part-e-validate--iterate) |
-| Automate with agents and prompt files | [Automating Migrations](MIGRATION.md#-automating-migrations-with-custom-agents--prompt-files) |
-
-### Required Deliverables
-
-#### 1. Source Code Analysis
-- Fork and clone your chosen starter repository
-- Use Copilot to audit the codebase and produce a `migration-plan.md` — follow [Part A](MIGRATION.md#part-a-plan-migration-strategy-with-ai) and [Part B](MIGRATION.md#part-b-understand-source-code)
-- Identify deprecated APIs, outdated dependencies, missing test coverage, and architectural gaps
-- Map existing endpoints and data models to their modern equivalents
-- Document breaking changes and migration risks
-
-#### 2. Core Migration
-- Upgrade the build tool configuration and dependency versions
-- Introduce a clean layered architecture appropriate to the target stack
-- Expose or modernise the API surface with proper request/response contracts — follow [Part C](MIGRATION.md#part-c-setup-target-environment--test-plan) and [Part D](MIGRATION.md#part-d-migrate-code-with-ai)
-- Replace deprecated patterns with current framework equivalents
-- Add health and info endpoints (Actuator or equivalent)
-
-#### 3. Modernisation & Observability
-- Add structured logging with contextual fields (request ID, relevant domain IDs)
-- Add global error handling with standardised problem details (RFC 7807 or equivalent)
-- Write integration tests covering the migrated endpoints — follow [Part E](MIGRATION.md#part-e-validate--iterate)
-- Produce a `migration-report.md` summarising what changed, what was removed, and what was improved
 
 ### Technical Migration Path by Option
 
@@ -296,52 +271,3 @@ Follow [MIGRATION.md](MIGRATION.md) as your step-by-step guide throughout this t
 **Project 3** uses a forked external open-source repository as its baseline — fork your chosen starter repo (see Project 3 section) and no separate data files are needed.
 
 ---
-
-## Recommended Stack
-
-**Projects 1 & 2 — Frontend**
-
-| Layer | Technology |
-|---|---|
-| Framework | Your choice — React, Vue, vanilla JS, or any frontend stack |
-| Data | Static JSON files via `fetch()` — no API calls to a server |
-| Testing | Vitest / Jest or equivalent |
-| Build | Vite or equivalent |
-
-**Project 3 — Migration (stack depends on chosen starter)**
-
-| Option | Target Framework | Data | REST | Testing | Build |
-|---|---|---|---|---|---|
-| A (ContosoUniversity) | .NET 8 Minimal API + React | EF Core 8 | `app.MapGroup()` | xUnit + WebApplicationFactory | .NET CLI |
-| B (uportal-messaging) | Spring Boot 3.x | Spring Data JPA + H2 | `@RestController` | JUnit 5 + Mockito | Maven |
-| C (docraptor-java) | Spring Boot 3.x | N/A (HTTP client) | `@RestController` | JUnit 5 + Mockito | Gradle 8 |
-
----
-
-## Workshop Flow
-
-| Phase | Activity | Approx. Duration |
-|---|---|---|
-| 0 | Intro: agentic workflow concepts, Copilot agent modes, workspace setup | 20 min |
-| 1 | Project selection + data schema walkthrough | 10 min |
-| 2 | **Blueprint phase**: Architect agent produces `BLUEPRINT.md` (tech decisions, data model, API design) — hard stop at 30 min | 30 min |
-| 3 | **Planning phase**: PM agent generates `developer_todo.md`, selects first backlog item | 20 min |
-| 4 | **Implementation**: specialist agents — data layer → logic → first UI component (one backlog item end-to-end) | 90 min |
-| 5 | **Test phase**: Test Engineer writes and runs failing tests → implementation → green | 30 min |
-| 6 | Demo + retrospective: what did the agents do well, where did they need redirecting? | 20 min |
-
----
-
-## Agentic Workflow Reference
-
-Follow [AGENTIC_WORKFLOW.md](AGENTIC_WORKFLOW.md) for the full step-by-step guide covering all phases from blueprinting through to feature implementation. It includes mode guidance (Ask / Plan / Agent), time estimates, and a design checklist to review at the end of each phase.
-
-**Key artefacts to produce in every project:**
-
-| File | Produced by | Purpose |
-|---|---|---|
-| `BLUEPRINT.md` | Architect agent (Ask mode) | Technical decisions, data model, API surface, constraints |
-| `developer_todo.md` | Planning agent (Ask mode) | Phased task list with acceptance criteria per task |
-| `.github/copilot-instructions.md` | Agent mode | Universal project conventions |
-| `.github/agents/<name>.agent.md` | Agent mode | Specialist agent definitions |
-| `README.md` | Developer agent | Running instructions, architecture summary |
