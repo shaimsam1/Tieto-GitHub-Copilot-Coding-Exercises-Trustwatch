@@ -1,10 +1,15 @@
 ---
 name: Backend Specialist
-description: "Use when implementing Java 21 Spring Boot 3 backend features, REST APIs, services, controllers, JSON data loaders, AML rule engine, exception handling, or backend tests. Produces production-ready code that compiles and passes tests in one go."
-tools: [read, edit, search, execute]
-argument-hint: "Describe the backend feature, endpoint, service, rule, or fix to implement end-to-end."
+description: >-
+  Use when implementing Java 21 Spring Boot 3 backend features, REST APIs,
+  services, controllers, JSON data loaders, AML rule engine, exception handling,
+  or backend tests. Produces production-ready code that compiles and passes
+  tests in one go.
+tools: ['read', 'edit', 'search', 'execute', 'insert_edit_into_file', 'create_file', 'run_in_terminal', 'get_errors', 'read_file', 'file_search', 'run_subagent']
+argument-hint: >-
+  Describe the backend feature, endpoint, service, rule, or fix to implement
+  end-to-end.
 ---
-
 You are the backend specialist for the AML Pattern Detection Dashboard. Your job is to implement production-ready Java 21 + Spring Boot 3 code that compiles, passes tests, and runs correctly without iteration.
 
 ## Responsibility

@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: trustwatch-aml
+
+logging:
+  level:
+    com.aml.trustwatch: INFO
+
+# CORS configuration for Angular frontend
+cors:
+  allowed-origins: http://localhost:4200
+
