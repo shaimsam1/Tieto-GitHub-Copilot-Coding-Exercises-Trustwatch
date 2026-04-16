@@ -1,0 +1,159 @@
+<div class="pattern-viewer-container">
+  <header class="page-header">
+    <div class="header-content">
+      <nav class="breadcrumb">
+        <a routerLink="/">Dashboard</a>
+        <span class="separator">/</span>
+        <span>Pattern Viewer</span>
+      </nav>
+      <h1>AML Pattern Analysis</h1>
+      <p class="subtitle">Review and investigate detected money laundering patterns</p>
+    </div>
+    <button class="refresh-btn" (click)="refresh()" [disabled]="isLoading">
+      <span class="refresh-icon">↻</span>
+      Refresh
+    </button>
+  </header>
+
+  @if (isLoading) {
+    <app-loading-spinner message="Loading patterns..." />
+  } @else if (error) {
+    <div class="error-banner">
+      <span class="error-icon">⚠</span>
+      {{ error }}
+      <button class="retry-btn" (click)="refresh()">Retry</button>
+    </div>
+  } @else {
+    <!-- Summary Cards -->
+    <section class="summary-cards">
+      <div class="summary-card critical">
+        <span class="count">{{ getSeverityCount('CRITICAL') }}</span>
+        <span class="label">Critical</span>
+      </div>
+      <div class="summary-card high">
+        <span class="count">{{ getSeverityCount('HIGH') }}</span>
+        <span class="label">High</span>
+      </div>
+      <div class="summary-card medium">
+        <span class="count">{{ getSeverityCount('MEDIUM') }}</span>
+        <span class="label">Medium</span>
+      </div>
+      <div class="summary-card low">
+        <span class="count">{{ getSeverityCount('LOW') }}</span>
+        <span class="label">Low</span>
+      </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="filters-section">
+      <div class="filter-group">
+        <label for="severity-filter">Severity</label>
+        <select 
+          id="severity-filter" 
+          [(ngModel)]="selectedSeverity" 
+          (ngModelChange)="onFilterChange()">
+          @for (severity of severities; track severity) {
+            <option [value]="severity">{{ severity }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="typology-filter">Typology</label>
+        <select 
+          id="typology-filter" 
+          [(ngModel)]="selectedTypology" 
+          (ngModelChange)="onFilterChange()">
+          @for (typology of typologies; track typology) {
+            <option [value]="typology">{{ formatText(typology) }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group search-group">
+        <label for="search">Search</label>
+        <input 
+          id="search"
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          (ngModelChange)="onFilterChange()"
+          placeholder="Search by ID, typology, or action..." />
+      </div>
+
+      <button class="clear-btn" (click)="clearFilters()">Clear Filters</button>
+    </section>
+
+    <!-- Results -->
+    <section class="results-section">
+      <div class="results-header">
+        <h2>Detected Patterns</h2>
+        <span class="results-count">{{ filteredFlags.length }} of {{ flags.length }} patterns</span>
+      </div>
+
+      @if (filteredFlags.length === 0) {
+        <div class="empty-state">
+          <span class="empty-icon">🔍</span>
+          <p>No patterns match your filters</p>
+          <button class="clear-btn" (click)="clearFilters()">Clear Filters</button>
+        </div>
+      } @else {
+        <div class="patterns-grid">
+          @for (flag of filteredFlags; track flag.flagId) {
+            <article class="pattern-card" [attr.data-severity]="flag.severity">
+              <header class="pattern-header">
+                <div class="pattern-typology">
+                  <span class="typology-icon">
+                    @switch (flag.typology) {
+                      @case ('STRUCTURING') { 📊 }
+                      @case ('LAYERING') { 📚 }
+                      @case ('ROUND_TRIPPING') { 🔄 }
+                      @case ('SHELL_NETWORK') { 🐚 }
+                      @case ('VELOCITY_ANOMALY') { ⚡ }
+                      @case ('SMURFING') { 👥 }
+                      @default { ⚠ }
+                    }
+                  </span>
+                  <span class="typology-name">{{ formatText(flag.typology) }}</span>
+                </div>
+                <app-severity-badge [severity]="flag.severity" />
+              </header>
+
+              <div class="pattern-body">
+                <div class="pattern-detail">
+                  <span class="detail-label">Account</span>
+                  <span class="detail-value">{{ getAccountName(flag.accountId) }}</span>
+                </div>
+
+                <div class="pattern-detail">
+                  <span class="detail-label">Confidence Score</span>
+                  <div class="confidence-meter">
+                    <div class="confidence-track">
+                      <div 
+                        class="confidence-fill" 
+                        [style.width.%]="flag.confidenceScore"
+                        [attr.data-level]="flag.confidenceScore >= 80 ? 'high' : flag.confidenceScore >= 60 ? 'medium' : 'low'">
+                      </div>
+                    </div>
+                    <span class="confidence-value">{{ flag.confidenceScore }}%</span>
+                  </div>
+                </div>
+
+                <div class="pattern-detail">
+                  <span class="detail-label">Detected At</span>
+                  <span class="detail-value timestamp">{{ flag.detectedAt | date:'medium' }}</span>
+                </div>
+              </div>
+
+              <footer class="pattern-footer">
+                <div class="recommended-action" [attr.data-action]="flag.recommendedAction">
+                  <span class="action-label">Recommended Action:</span>
+                  <span class="action-value">{{ formatText(flag.recommendedAction) }}</span>
+                </div>
+              </footer>
+            </article>
+          }
+        </div>
+      }
+    </section>
+  }
+</div>

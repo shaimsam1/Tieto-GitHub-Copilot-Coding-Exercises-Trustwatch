@@ -1,0 +1,244 @@
+<div class="network-container">
+  <header class="page-header">
+    <div class="header-content">
+      <nav class="breadcrumb">
+        <a routerLink="/">Dashboard</a>
+        <span class="separator">/</span>
+        <span>Account Network</span>
+      </nav>
+      <h1>Account Network Analysis</h1>
+      <p class="subtitle">Visualize transaction relationships and fund flows between accounts</p>
+    </div>
+    <button class="refresh-btn" (click)="refresh()" [disabled]="isLoading">
+      <span class="refresh-icon">↻</span>
+      Refresh
+    </button>
+  </header>
+
+  @if (isLoading) {
+    <app-loading-spinner message="Loading network data..." />
+  } @else if (error) {
+    <div class="error-banner">
+      <span class="error-icon">⚠</span>
+      {{ error }}
+      <button class="retry-btn" (click)="refresh()">Retry</button>
+    </div>
+  } @else {
+    <!-- Network Stats -->
+    <section class="network-stats">
+      <div class="stat-item">
+        <span class="stat-value">{{ accounts.length }}</span>
+        <span class="stat-label">Total Accounts</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">{{ edges.length }}</span>
+        <span class="stat-label">Transaction Links</span>
+      </div>
+      <div class="stat-item flagged">
+        <span class="stat-value">{{ getFlaggedEdgesCount() }}</span>
+        <span class="stat-label">Flagged Links</span>
+      </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="filters-section">
+      <div class="filter-group">
+        <label>
+          <input 
+            type="checkbox" 
+            [(ngModel)]="showFlaggedOnly" 
+            (ngModelChange)="onFilterChange()" />
+          Show flagged accounts only
+        </label>
+      </div>
+
+      <div class="filter-group">
+        <label for="risk-filter">Risk Rating</label>
+        <select 
+          id="risk-filter" 
+          [(ngModel)]="selectedRiskRating" 
+          (ngModelChange)="onFilterChange()">
+          @for (rating of riskRatings; track rating) {
+            <option [value]="rating">{{ rating }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group search-group">
+        <label for="search">Search</label>
+        <input 
+          id="search"
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          (ngModelChange)="onFilterChange()"
+          placeholder="Search by name, ID, or IBAN..." />
+      </div>
+
+      <button class="clear-btn" (click)="clearFilters()">Clear Filters</button>
+    </section>
+
+    <div class="network-layout">
+      <!-- Account List -->
+      <section class="accounts-panel">
+        <header class="panel-header">
+          <h2>Accounts</h2>
+          <span class="count">{{ filteredNodes.length }} accounts</span>
+        </header>
+
+        <div class="accounts-list">
+          @if (filteredNodes.length === 0) {
+            <div class="empty-state">
+              <p>No accounts match your filters</p>
+            </div>
+          } @else {
+            @for (node of filteredNodes; track node.account.accountId) {
+              <article 
+                class="account-row"
+                [class.selected]="selectedAccount?.accountId === node.account.accountId"
+                [class.has-flags]="node.account.amlFlags.length > 0"
+                (click)="selectAccount(node)">
+                
+                <div class="account-info">
+                  <div class="account-primary">
+                    <span class="customer-name">{{ node.account.customerName }}</span>
+                    <app-account-type-badge [type]="node.account.accountType" />
+                  </div>
+                  <span class="account-iban">{{ node.account.iban }}</span>
+                </div>
+
+                <div class="account-metrics">
+                  <div class="metric">
+                    <span class="metric-label">Risk</span>
+                    <span class="risk-badge" [class]="getRiskClass(node.account.riskRating)">
+                      {{ node.account.riskRating }}
+                    </span>
+                  </div>
+                  <div class="metric">
+                    <span class="metric-label">Links</span>
+                    <span class="metric-value">
+                      {{ node.incomingEdges.length + node.outgoingEdges.length }}
+                    </span>
+                  </div>
+                  @if (node.flaggedConnections > 0) {
+                    <div class="metric flagged">
+                      <span class="metric-label">Flagged</span>
+                      <span class="metric-value">{{ node.flaggedConnections }}</span>
+                    </div>
+                  }
+                  @if (node.account.amlFlags.length > 0) {
+                    <div class="metric alerts">
+                      <span class="metric-label">Alerts</span>
+                      <span class="metric-value">{{ node.account.amlFlags.length }}</span>
+                    </div>
+                  }
+                </div>
+              </article>
+            }
+          }
+        </div>
+      </section>
+
+      <!-- Edge Details Panel -->
+      <section class="edges-panel" [class.active]="selectedAccount">
+        @if (selectedAccount) {
+          <header class="panel-header">
+            <div class="selected-account-info">
+              <h2>{{ selectedAccount.customerName }}</h2>
+              <span class="selected-iban">{{ selectedAccount.iban }}</span>
+            </div>
+            <button class="close-btn" (click)="clearSelection()">×</button>
+          </header>
+
+          <!-- Account Summary -->
+          <div class="account-summary">
+            <div class="summary-item incoming">
+              <span class="summary-icon">↓</span>
+              <div class="summary-content">
+                <span class="summary-value">{{ getIncomingEdgesCount() }}</span>
+                <span class="summary-label">Incoming</span>
+              </div>
+            </div>
+            <div class="summary-item outgoing">
+              <span class="summary-icon">↑</span>
+              <div class="summary-content">
+                <span class="summary-value">{{ getOutgoingEdgesCount() }}</span>
+                <span class="summary-label">Outgoing</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- AML Flags for Selected Account -->
+          @if (selectedAccount.amlFlags.length > 0) {
+            <div class="account-flags">
+              <h3>Active AML Flags</h3>
+              <div class="flags-list">
+                @for (flag of selectedAccount.amlFlags; track flag.flagId) {
+                  <div class="flag-item">
+                    <app-severity-badge [severity]="flag.severity" />
+                    <span class="flag-typology">{{ formatTypology(flag.typology) }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Transaction Edges -->
+          <div class="edges-list">
+            <h3>Transaction Links</h3>
+            @if (selectedAccountEdges.length === 0) {
+              <p class="no-edges">No transaction links found</p>
+            } @else {
+              <table class="edges-table">
+                <thead>
+                  <tr>
+                    <th>Direction</th>
+                    <th>Counterparty</th>
+                    <th>Amount</th>
+                    <th>Hops</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (edge of selectedAccountEdges; track edge.edgeId) {
+                    <tr [class.flagged]="edge.isFlagged">
+                      <td class="direction">
+                        @if (getEdgeDirection(edge) === 'incoming') {
+                          <span class="direction-badge incoming">← IN</span>
+                        } @else {
+                          <span class="direction-badge outgoing">OUT →</span>
+                        }
+                      </td>
+                      <td class="counterparty">
+                        @if (getEdgeDirection(edge) === 'incoming') {
+                          {{ getAccountName(edge.fromAccountId) }}
+                        } @else {
+                          {{ getAccountName(edge.toAccountId) }}
+                        }
+                      </td>
+                      <td class="amount">{{ edge.amount | currency:edge.currency }}</td>
+                      <td class="hops">{{ edge.hops }}</td>
+                      <td class="timestamp">{{ edge.timestamp | date:'short' }}</td>
+                      <td class="status">
+                        @if (edge.isFlagged) {
+                          <span class="flagged-badge">🚨 Flagged</span>
+                        } @else {
+                          <span class="normal-badge">✓ Normal</span>
+                        }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            }
+          </div>
+        } @else {
+          <div class="no-selection">
+            <span class="no-selection-icon">👆</span>
+            <p>Select an account to view transaction links</p>
+          </div>
+        }
+      </section>
+    </div>
+  }
+</div>
