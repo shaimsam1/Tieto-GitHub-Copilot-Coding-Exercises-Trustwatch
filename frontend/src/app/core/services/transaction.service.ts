@@ -27,7 +27,7 @@ export class TransactionService {
   }
 
   getTransactionsByAccount(accountId: string): Observable<Transaction[]> {
-    return this.apiService.get<Transaction[]>(`/api/transactions?accountId=${accountId}`);
+    return this.apiService.get<Transaction[]>(`/api/transactions/account/${accountId}`);
   }
 
   getHighRiskTransactions(minScore: number = 70): Observable<Transaction[]> {
@@ -35,20 +35,20 @@ export class TransactionService {
   }
 
   getPendingReviewTransactions(): Observable<Transaction[]> {
-    return this.apiService.get<Transaction[]>('/api/transactions?status=PENDING_REVIEW');
+    return this.apiService.get<Transaction[]>('/api/transactions/pending');
   }
 
   getBlockedTransactions(): Observable<Transaction[]> {
-    return this.apiService.get<Transaction[]>('/api/transactions?status=BLOCKED');
+    return this.apiService.get<Transaction[]>('/api/transactions/blocked');
   }
 
   getTransactionEdges(): Observable<TransactionEdge[]> {
-    return this.apiService.get<TransactionEdge[]>('/api/transaction-edges').pipe(
+    return this.apiService.get<TransactionEdge[]>('/api/network/edges').pipe(
       tap(edges => this.edgesSubject.next(edges))
     );
   }
 
   getFlaggedEdges(): Observable<TransactionEdge[]> {
-    return this.apiService.get<TransactionEdge[]>('/api/transaction-edges?flagged=true');
+    return this.apiService.get<TransactionEdge[]>('/api/network/edges/flagged');
   }
 }

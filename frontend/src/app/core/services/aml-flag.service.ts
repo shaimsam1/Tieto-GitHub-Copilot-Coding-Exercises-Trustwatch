@@ -15,28 +15,28 @@ export class AmlFlagService {
   flags$ = this.flagsSubject.asObservable();
 
   getFlags(): Observable<AmlFlag[]> {
-    return this.apiService.get<AmlFlag[]>('/api/aml-flags').pipe(
+    return this.apiService.get<AmlFlag[]>('/api/alerts').pipe(
       tap(flags => this.flagsSubject.next(flags))
     );
   }
 
   getFlagById(flagId: string): Observable<AmlFlag> {
-    return this.apiService.get<AmlFlag>(`/api/aml-flags/${flagId}`);
+    return this.apiService.get<AmlFlag>(`/api/alerts/${flagId}`);
   }
 
   getFlagsByAccount(accountId: string): Observable<AmlFlag[]> {
-    return this.apiService.get<AmlFlag[]>(`/api/aml-flags?accountId=${accountId}`);
+    return this.apiService.get<AmlFlag[]>(`/api/alerts/account/${accountId}`);
   }
 
   getFlagsBySeverity(severity: Severity): Observable<AmlFlag[]> {
-    return this.apiService.get<AmlFlag[]>(`/api/aml-flags?severity=${severity}`);
+    return this.apiService.get<AmlFlag[]>(`/api/alerts/severity/${severity}`);
   }
 
   getCriticalFlags(): Observable<AmlFlag[]> {
-    return this.getFlagsBySeverity('CRITICAL');
+    return this.apiService.get<AmlFlag[]>('/api/alerts/critical');
   }
 
   getHighPriorityFlags(): Observable<AmlFlag[]> {
-    return this.apiService.get<AmlFlag[]>('/api/aml-flags?severity=CRITICAL&severity=HIGH');
+    return this.apiService.get<AmlFlag[]>('/api/alerts/high');
   }
 }
