@@ -101,7 +101,9 @@
                     </td>
                     <td>
                       <div class="confidence-bar">
-                        <div class="confidence-fill" [style.width.%]="flag.confidenceScore"></div>
+                        <div class="confidence-track">
+                          <div class="confidence-fill" [style.width.%]="flag.confidenceScore"></div>
+                        </div>
                         <span>{{ flag.confidenceScore }}%</span>
                       </div>
                     </td>

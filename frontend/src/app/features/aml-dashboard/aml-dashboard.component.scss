@@ -258,18 +258,20 @@
   align-items: center;
   gap: 0.5rem;
 
-  &::before {
-    content: '';
+  .confidence-track {
     width: 50px;
     height: 6px;
     background: #e5e7eb;
     border-radius: 3px;
     position: relative;
+    overflow: hidden;
   }
 
   .confidence-fill {
     position: absolute;
-    height: 6px;
+    left: 0;
+    top: 0;
+    height: 100%;
     background: #3b82f6;
     border-radius: 3px;
   }
